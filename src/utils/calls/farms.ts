@@ -12,7 +12,7 @@ export const stakeFarm = async (masterChefContract, pid, amount) => {
   const gasPrice = getGasPrice()
   const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
 
-  const tx = await masterChefContract.deposit(pid, value, getReferralAddress, { ...options, gasPrice })
+  const tx = await masterChefContract.deposit(pid, value, getReferralAddress(), { ...options, gasPrice })
   const receipt = await tx.wait()
   return receipt.status
 }
@@ -29,7 +29,7 @@ export const unstakeFarm = async (masterChefContract, pid, amount) => {
 export const harvestFarm = async (masterChefContract, pid) => {
   const gasPrice = getGasPrice()
 
-  const tx = await masterChefContract.deposit(pid, '0', getReferralAddress, { ...options, gasPrice })
+  const tx = await masterChefContract.deposit(pid, '0', getReferralAddress(), { ...options, gasPrice })
   const receipt = await tx.wait()
   return receipt.status
 }
