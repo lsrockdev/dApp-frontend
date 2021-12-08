@@ -117,7 +117,7 @@ const Hero = () => {
             {account ? (
                 <div>
                   <ReferralLink /> 
-                  <TotalReferralCount />
+                  {/* <TotalReferralCount /> */}
                 </div>
               ) : (
                 <div>
