@@ -65,6 +65,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const lpAddress = getAddress(farm.lpAddresses)
   const isPromotedFarm = farm.token.symbol === 'CAKE'
+  const apy =  Math.round((getApy(farm.apr)) * 100)/100
 
   return (
     <StyledCard isActive={isPromotedFarm}>
@@ -76,9 +77,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
           token={farm.token}
           quoteToken={farm.quoteToken}
         />
-        {!removed && (
+        {/* {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
-            <Text>{t('APY')}:</Text>
+            <Text>{t('APR')}:</Text>
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
                 <ApyButton
@@ -98,7 +99,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
               )}
             </Text>
           </Flex>
-        )}
+        )} */}
+        <Flex justifyContent="space-between">
+          <Text>{t('APY')}:</Text>
+          <Text bold>{apy}%</Text>
+        </Flex>
+
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
           <Text bold>{earnLabel}</Text>
