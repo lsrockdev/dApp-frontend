@@ -58,7 +58,7 @@ const HarvestAction: React.FunctionComponent<HarvestActionProps> = ({ pid, userD
           )}
         </div>
         <Button
-          disabled={earnings.eq(0) || pendingTx || !userDataReady}
+          disabled={earnings.eq(0) || pendingTx || !userDataReady || userData.nextHarvestUntil > Math.floor(Date.now() / 1000)}
           onClick={async () => {
             setPendingTx(true)
             try {

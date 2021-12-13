@@ -29,6 +29,7 @@ interface SerializedFarmUserData {
   tokenBalance: string
   stakedBalance: string
   earnings: string
+  nextHarvestUntil: number
 }
 
 export interface DeserializedFarmUserData {
@@ -36,6 +37,7 @@ export interface DeserializedFarmUserData {
   tokenBalance: BigNumber
   stakedBalance: BigNumber
   earnings: BigNumber
+  nextHarvestUntil: number
 }
 
 export interface SerializedFarm extends SerializedFarmConfig {

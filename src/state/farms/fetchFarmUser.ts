@@ -37,7 +37,7 @@ export const fetchFarmUserTokenBalances = async (account: string, farmsToFetch: 
   return parsedTokenBalances
 }
 
-export const fetchFarmUserStakedBalances = async (account: string, farmsToFetch: SerializedFarmConfig[]) => {
+export const fetchFarmUserInfos = async (account: string, farmsToFetch: SerializedFarmConfig[]) => {
   const masterChefAddress = getMasterChefAddress()
 
   const calls = farmsToFetch.map((farm) => {
@@ -52,7 +52,10 @@ export const fetchFarmUserStakedBalances = async (account: string, farmsToFetch:
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0]._hex).toJSON()
   })
-  return parsedStakedBalances
+  const parsedNextHarvestUntils = rawStakedBalances.map((stakedBalance) => {
+    return new BigNumber(stakedBalance[3]._hex).toNumber()
+  })
+  return [parsedStakedBalances, parsedNextHarvestUntils]
 }
 
 export const fetchFarmUserEarnings = async (account: string, farmsToFetch: SerializedFarmConfig[]) => {

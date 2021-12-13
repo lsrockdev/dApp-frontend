@@ -57,6 +57,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : t('SPY + Fees')
+  const harvestIntervalInHours = farm.harvestInterval ? farm.harvestInterval.div(3600).toNumber() : 0
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: farm.quoteToken.address,
@@ -109,6 +110,16 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, displayApr, removed, cakePric
           <Text>{t('Earn')}:</Text>
           <Text bold>{earnLabel}</Text>
         </Flex>
+
+        {
+          harvestIntervalInHours > 0 &&
+          <Flex justifyContent="space-between">
+            <Text>{t('Harvest Lockup')}:</Text>
+            <Text bold>{harvestIntervalInHours} Hour (s)</Text>
+          </Flex>
+        }
+
+        
         <CardActionsContainer
           farm={farm}
           lpLabel={lpLabel}

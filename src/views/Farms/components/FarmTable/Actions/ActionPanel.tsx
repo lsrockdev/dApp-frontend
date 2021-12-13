@@ -21,6 +21,7 @@ export interface ActionPanelProps {
   details: FarmWithStakedValue
   userDataReady: boolean
   expanded: boolean
+  nextHarvestUntil?: number
 }
 
 const expandAnimation = keyframes`
@@ -136,7 +137,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
   multiplier,
   liquidity,
   userDataReady,
-  expanded,
+  expanded
 }) => {
   const farm = details
 
@@ -184,7 +185,7 @@ const ActionPanel: React.FunctionComponent<ActionPanelProps> = ({
         </ValueWrapper>
       </ValueContainer>
       <ActionContainer>
-        <HarvestAction {...farm} userDataReady={userDataReady} />
+        <HarvestAction {...farm} userDataReady={userDataReady}/>
         <StakedAction {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value} />
       </ActionContainer>
     </Container>

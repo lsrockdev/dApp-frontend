@@ -17,6 +17,7 @@ const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData
     tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : BIG_ZERO,
     stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : BIG_ZERO,
     earnings: farm.userData ? new BigNumber(farm.userData.earnings) : BIG_ZERO,
+    nextHarvestUntil : farm.userData ? farm.userData.nextHarvestUntil : 0
   }
 }
 
@@ -111,12 +112,13 @@ export const useFarmFromLpSymbol = (lpSymbol: string): DeserializedFarm => {
 
 export const useFarmUser = (pid): DeserializedFarmUserData => {
   const { userData } = useFarmFromPid(pid)
-  const { allowance, tokenBalance, stakedBalance, earnings } = userData
+  const { allowance, tokenBalance, stakedBalance, earnings, nextHarvestUntil } = userData
   return {
     allowance,
     tokenBalance,
     stakedBalance,
     earnings,
+    nextHarvestUntil
   }
 }
 
