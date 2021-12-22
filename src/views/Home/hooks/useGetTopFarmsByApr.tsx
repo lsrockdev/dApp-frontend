@@ -52,7 +52,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
           farm.spyPerBlock,
           cakePriceBusd,
           totalLiquidity,
-          farm.lpAddresses[parseInt(process.env.REACT_APP_CHAIN_ID, 10)],
+          farm.lpAddresses[ChainId.Mainnet],
         )
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr }
       })
