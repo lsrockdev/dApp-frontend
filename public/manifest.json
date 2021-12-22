@@ -2,7 +2,7 @@
   "short_name": "SmartyPay",
   "name": "SmartyPay",
   "description": "Farm SPY with Pancake LP Tokens",
-  "homepage_url": "https://app.spy-token.io",
+  "homepage_url": "http://app.spy-token.io",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#1FC7D4",
