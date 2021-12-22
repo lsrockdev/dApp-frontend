@@ -81,7 +81,6 @@ const ProfileHeader: React.FC<HeaderProps> = ({
               target="_blank"
               as="a"
               href={getBscScanLink(accountPath, 'address')}
-              alt={t('View BscScan for user address')}
             >
               <BscScanIcon width="20px" color="primary" />
             </StyledIconButton>
@@ -152,7 +151,8 @@ const ProfileHeader: React.FC<HeaderProps> = ({
   return (
     <>
       <BannerHeader bannerImage={getBannerImage()} bannerAlt={t('User team banner')} avatar={getAvatar()} />
-      <MarketPageTitle pb="48px" title={getTitle()} description={renderDescription()}>
+      {/* <MarketPageTitle pb="48px" title={getTitle()} description={renderDescription()}> */}
+      <MarketPageTitle title={getTitle()} description={renderDescription()}>
         <StatBox>
           <StatBoxItem title={t('NFT Collected')} stat={numNftCollected} />
           <StatBoxItem title={t('Points')} stat={numPoints} />
