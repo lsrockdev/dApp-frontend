@@ -33,7 +33,7 @@
   "dependencies": {
     "@binance-chain/bsc-connector": "^1.0.0",
     "@ethersproject/experimental": "^5.0.1",
-    "@pancakeswap/sdk": "https://gitpkg.now.sh/Smarty-Indonesia/pancake-swap-sdk?33f5e468a2477397200edeac34835cef69d56d6d",
+    "@pancakeswap/sdk": "https://gitpkg.now.sh/Smarty-Indonesia/pancake-swap-sdk?8973369433c2abbd380f0eedfd50d15fd8feaaa4",
     "@pancakeswap/uikit": "https://gitpkg.now.sh/Smarty-Indonesia/pancake-toolkit/packages/pancake-uikit?4eefb5fb951a469aaeaa1a7ea5a0fa6bf6e8c18f",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/multicodec": "^1.0.0",
