@@ -26,7 +26,7 @@ interface CurrencySearchProps {
   setImportToken: (token: Token) => void
 }
 
-const swapSound = new Audio('swap.mp3')
+const swapSound = new Audio('')
 
 function CurrencySearch({
   selectedCurrency,

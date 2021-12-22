@@ -86,7 +86,7 @@ const RoiCalculatorFooter: React.FC<RoiCalculatorFooterProps> = ({
                   {t('APR (incl. LP rewards)')}
                 </Text>
                 <Text small textAlign="right">
-                  {displayApr}%
+                  {displayApr}% 
                 </Text>
               </>
             )}

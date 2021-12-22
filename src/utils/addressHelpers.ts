@@ -76,4 +76,3 @@ export const getPancakeSquadAddress = () => {
 export const getReferralAddress = () => {
   return getAddress(addresses.referral)
 }
-

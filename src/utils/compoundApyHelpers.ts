@@ -72,7 +72,7 @@ export const getPrincipalForInterest = (
     return parseFloat((interest / apyAsDecimal).toFixed(2))
   })
 }
-
+ 
 /**
  * Given APR returns APY
  * @param apr APR as percentage

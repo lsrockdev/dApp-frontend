@@ -6,14 +6,14 @@ import tokens from 'config/constants/tokens'
 import { getBep20Contract, getCakeContract } from 'utils/contractHelpers'
 import { BIG_ZERO } from 'utils/bigNumber'
 import { simpleRpcProvider } from 'utils/providers'
-import useRefresh from './useRefresh'
+import useRefresh from './useRefresh' 
 import useLastUpdated from './useLastUpdated'
 
 type UseTokenBalanceState = {
   balance: BigNumber
   fetchStatus: FetchStatus
 }
-
+ 
 export enum FetchStatus {
   NOT_FETCHED = 'not-fetched',
   SUCCESS = 'success',
@@ -113,6 +113,13 @@ export const useGetBnbBalance = () => {
 
 export const useGetCakeBalance = () => {
   const { balance, fetchStatus } = useTokenBalance(tokens.cake.address)
+
+  // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
+  return { balance: ethers.BigNumber.from(balance.toString()), fetchStatus }
+}
+
+export const useGetSpyBalance = () => {
+  const { balance, fetchStatus } = useTokenBalance(tokens.spy.address)
 
   // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
   return { balance: ethers.BigNumber.from(balance.toString()), fetchStatus }

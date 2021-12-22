@@ -101,9 +101,9 @@ const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, 
   return (
     <RoiCardWrapper>
       <RoiCardInner>
-        <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+        {/* <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
           {t('ROI at current rates')}
-        </Text>
+        </Text> */}
         <Flex justifyContent="space-between" mt="4px" height="36px">
           {mode === CalculatorMode.PRINCIPAL_BASED_ON_ROI ? (
             <>
@@ -137,9 +137,9 @@ const RoiCard: React.FC<RoiCardProps> = ({ earningTokenSymbol, calculatorState, 
                   })}
                 </RoiDollarAmount>
               </RoiDisplayContainer>
-              <IconButton scale="sm" variant="text" onClick={onEnterEditing}>
+              {/* <IconButton scale="sm" variant="text" onClick={onEnterEditing}>
                 <PencilIcon color="primary" />
-              </IconButton>
+              </IconButton> */}
             </>
           )}
         </Flex>

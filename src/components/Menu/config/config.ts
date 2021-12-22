@@ -5,11 +5,22 @@ import { nftsBaseUrl } from 'views/Nft/market/constants'
 export type ConfigMenuItemsType = MenuItemsType & { hideSubNav?: boolean }
 
 const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
+  // {
+  //   label: t('Home'),
+  //   href: 'https://spy-token.io/',
+  //   icon: '',
+  //   items: [],
+  // },
+  // {
+  //   label: t('Tokenomy'),
+  //   href: '/tokenomy',
+  //   icon: '',
+  //   items: [],
+  // },
   {
     label: t('Trade'),
-    icon: 'Trade',
     href: '/swap',
-    showItemsOnMobile: false,
+    icon: 'Trade',
     items: [
       {
         label: t('Exchange'),
@@ -21,33 +32,90 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       },
     ],
   },
+  // {
+  //   label: t('Exchange'),
+  //   icon: 'Trade',
+  //   href: '/swap',
+  //   showItemsOnMobile: false,
+  //   items: [],
+  // },
+  // {
+  //   label: t('Liquidity'),
+  //   href: '/liquidity',
+  //   icon: 'Pool',
+  //   items: [],
+  // },
   {
-    label: t('Farms'),
-    href: '/farms',
+    label: t('Earn'),
+    href: '/Farms',
     icon: 'Earn',
     items: [
       {
         label: t('Farms'),
         href: '/farms',
       },
-      {
-        label: t('Pools'),
-        href: '/pools',
-      },
+      // {
+      //   label: t('Pools'),
+      //   href: '/pools',
+      // },
     ],
   },
+  // {
+  //   label: t('Referral'),
+  //   href: '/referral',
+  //   icon: 'Ticket',
+  //   items: [],
+  // },
   {
     label: t('Referral'),
-    href: '/',
-    icon: 'Earn',
+    href: '/referral',
+    icon: 'Ticket',
     items: [
       {
         label: t('Referral'),
-        href: '/',
+        href: '/referral',
       },
+  //     {
+  //       label: t('Audit'),
+  //       href: '',
+  //     },
+  //     {
+  //       label: t('Whitepaper'),
+  //       href: '',
+  //     },
+  //     {
+  //       label: t('Roadmap'),
+  //       href: '',
+  //     },
+  //     {
+  //       label: t('Founder'),
+  //       href: '',
+  //     },
+  //     {
+  //       label: t('Partner'),
+  //       href: '',
+  //     },
     ],
   },
-
+  // {
+  //   label: t('Join Telegram'),
+  //   href: '',
+  //   icon: '',
+  //   items: [
+  //     {
+  //       label: t('Indonesian Group'),
+  //       href: '',
+  //     },
+  //     {
+  //       label: t('Global Group'),
+  //       href: '',
+  //     },
+  //     {
+  //       label: t('Tokie Indonesia'),
+  //       href: '',
+  //     },
+  //   ],
+  // },
   // {
   //   label: t('Win'),
   //   href: '/prediction',
@@ -63,21 +131,21 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   //     },
   //   ],
   // },
-  {
-    label: t('NFT'),
-    href: `${nftsBaseUrl}`,
-    icon: 'Nft',
-    items: [
-      {
-        label: t('Overview'),
-        href: `${nftsBaseUrl}`,
-      },
-      {
-        label: t('Collections'),
-        href: `${nftsBaseUrl}/collections`,
-      },
-    ],
-  },
+  // {
+  //   label: t('NFT'),
+  //   href: `${nftsBaseUrl}`,
+  //   icon: 'Nft',
+  //   items: [
+  //     {
+  //       label: t('Overview'),
+  //       href: `${nftsBaseUrl}`,
+  //     },
+  //     {
+  //       label: t('Collections'),
+  //       href: `${nftsBaseUrl}/collections`,
+  //     },
+  //   ],
+  // },
   // {
   //   label: '',
   //   href: '/info',

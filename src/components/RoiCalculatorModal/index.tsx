@@ -11,6 +11,7 @@ import {
   HelpIcon,
   ButtonMenuItem,
   useTooltip,
+  LinkExternal,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'contexts/Localization'
@@ -79,7 +80,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   stakingTokenPrice,
   multiplier,
   initialValue,
-  earningTokenSymbol = 'CAKE',
+  earningTokenSymbol = 'SPY',
   autoCompoundFrequency = 0,
   performanceFee = 0,
   isFarm = false,
@@ -190,48 +191,23 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
             >
               {t('My Balance').toLocaleUpperCase()}
             </Button>
-            <span ref={targetRef}>
+            {/* <span ref={targetRef}>
               <HelpIcon width="16px" height="16px" color="textSubtle" />
-            </span>
-            {tooltipVisible && tooltip}
+            </span> */}
+            {/* {tooltipVisible && tooltip} */}
           </Flex>
           <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">
-            {t('Staked for')}
+            {t('Timeframe')}
           </Text>
           <FullWidthButtonMenu activeIndex={stakingDuration} onItemClick={setStakingDuration} scale="sm">
             <ButtonMenuItem variant="tertiary">{t('1D')}</ButtonMenuItem>
             <ButtonMenuItem variant="tertiary">{t('7D')}</ButtonMenuItem>
             <ButtonMenuItem variant="tertiary">{t('30D')}</ButtonMenuItem>
             <ButtonMenuItem variant="tertiary">{t('1Y')}</ButtonMenuItem>
-            <ButtonMenuItem variant="tertiary">{t('5Y')}</ButtonMenuItem>
+            {/* <ButtonMenuItem variant="tertiary">{t('5Y')}</ButtonMenuItem> */}
           </FullWidthButtonMenu>
-          {autoCompoundFrequency === 0 && (
-            <>
-              <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">
-                {t('Compounding every')}
-              </Text>
-              <Flex alignItems="center">
-                <Flex flex="1">
-                  <Checkbox scale="sm" checked={compounding} onChange={toggleCompounding} />
-                </Flex>
-                <Flex flex="6">
-                  <FullWidthButtonMenu
-                    disabled={!compounding}
-                    activeIndex={activeCompoundingIndex}
-                    onItemClick={setCompoundingFrequency}
-                    scale="sm"
-                  >
-                    <ButtonMenuItem>{t('1D')}</ButtonMenuItem>
-                    <ButtonMenuItem>{t('7D')}</ButtonMenuItem>
-                    <ButtonMenuItem>{t('14D')}</ButtonMenuItem>
-                    <ButtonMenuItem>{t('30D')}</ButtonMenuItem>
-                  </FullWidthButtonMenu>
-                </Flex>
-              </Flex>
-            </>
-          )}
         </Flex>
-        <AnimatedArrow calculatorState={state} />
+        {/* <AnimatedArrow calculatorState={state} /> */}
         <Flex>
           <RoiCard
             earningTokenSymbol={earningTokenSymbol}
@@ -240,8 +216,12 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
             setCalculatorMode={setCalculatorMode}
           />
         </Flex>
+        <Flex justifyContent="center" mt="24px">
+          <LinkExternal href={linkHref}>{linkLabel}</LinkExternal>
+        </Flex>
       </ScrollableContainer>
-      <RoiCalculatorFooter
+      
+      {/* <RoiCalculatorFooter
         isFarm={isFarm}
         apr={apr}
         displayApr={displayApr}
@@ -250,7 +230,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
         linkLabel={linkLabel}
         linkHref={linkHref}
         performanceFee={performanceFee}
-      />
+      /> */}
     </StyledModal>
   )
 }

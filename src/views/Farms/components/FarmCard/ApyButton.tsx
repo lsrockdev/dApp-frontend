@@ -65,7 +65,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({
 
   return (
     <ApyLabelContainer alignItems="center" onClick={handleClickButton}>
-      {(getApy(apr, 86400 / harvestInterval.toNumber(), 1) * 100).toLocaleString('en-US', {maximumFractionDigits: 2})}%
+      {(getApy(apr, 86400 / harvestInterval.toNumber(), 365) * 100).toLocaleString('en-US', {maximumFractionDigits: 2})}%
       {variant === 'text-and-button' && (
         <IconButton variant="text" scale="sm" ml="4px">
           <CalculateIcon width="18px" />

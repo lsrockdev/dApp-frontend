@@ -20,22 +20,8 @@ export const mainnetTokens = {
   bnb: new Token(MAINNET, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'BNB', 'BNB', 'https://www.binance.com/'),
   cake: new Token(MAINNET, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token', ''),
   nft: new Token(MAINNET, '0x1fC9004eC7E5722891f5f38baE7678efCB11d34D', 6, 'NFT', 'APENFT', 'https://apenft.org'),
-  dai: new Token(
-    MAINNET,
-    '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
-    18,
-    'DAI',
-    'Dai Stablecoin',
-    'https://www.makerdao.com/',
-  ),
-  ust: new Token(
-    MAINNET,
-    '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
-    18,
-    'UST',
-    'Wrapped UST Token',
-    'https://mirror.finance/',
-  ),
+  dai: new Token(MAINNET, '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3', 18, 'DAI', 'Dai Stablecoin', 'https://www.makerdao.com/'),
+  ust: new Token(MAINNET,'0x23396cF899Ca06c4472205fC903bDB4de249D6fC', 18, 'UST', 'Wrapped UST Token', 'https://mirror.finance/'),
   busd: new Token(MAINNET, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD', 'https://www.paxos.com/busd/'),
   usdt: new Token(MAINNET, '0x55d398326f99059fF775485246999027B3197955', 18, 'USDT', 'Tether USD', 'https://tether.to/'),
   btcb: new Token(MAINNET, '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c', 18, 'BTCB', 'Binance BTC', 'https://bitcoin.org/'),
@@ -43,15 +29,13 @@ export const mainnetTokens = {
   usdc: new Token(MAINNET, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'Binance-Peg USD Coin', 'https://www.centre.io/usdc'),
   syrup: new Token(MAINNET, '0x009cF7bC57584b7998236eff51b98A168DceA9B0', 18, 'SYRUP', 'SyrupBar Token', 'https://pancakeswap.finance/'),
   babycake: new Token(MAINNET, '0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c', 18, 'BABYCAKE', 'Baby Cake Token', 'https://babycake.app/'),
-  msc: new Token(TESTNET, '0xb3ae8E5bccebD6F7002C3bF1D5713477B16f8791', 18, 'MSC', 'MyShitCoin', ''),
-  spy: new Token(TESTNET, '0x6F25144001Ce324E745c3FF25a646A292883feD5', 0, 'SPY', 'Smarty Pay', ''),
+  spy: new Token(MAINNET, '0x17fd3cAa66502C6F1CbD5600D8448f3aF8f2ABA1', 0, 'SPY', 'Smarty Pay Token', 'https://app.spy-token.io'),
 }
 export const testnetTokens = {
   wbnb: new Token(TESTNET, '0xf9a7A2b01Bf758776703677719F8aCf018600070', 18, 'WBNB', 'Wrapped BNB', 'https://www.binance.com/'),
-  cake: new Token(TESTNET, '0x12C6f5dEcaAda351D39E911E8f71e8e99F6D71D9', 0, 'CAKE', 'PancakeSwap Token', 'https://pancakeswap.finance/'),
-  spy: new Token(TESTNET, '0x6F25144001Ce324E745c3FF25a646A292883feD5', 0, 'SPY', 'SmartyPay Token', 'https://smartypay.io'),
+  cake: new Token(TESTNET, '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe', 0, 'CAKE', 'PancakeSwap Token', 'https://pancakeswap.finance/'),
+  spy: new Token(TESTNET, '0x6F25144001Ce324E745c3FF25a646A292883feD5', 0, 'SPY', 'SmartyPay Token', 'http://test.smarty-pay.com'),
   busd: new Token(TESTNET, '0x2aFD1d7DADEfb7fE31364A4f57f704c1558C8Edc', 18, 'BUSD', 'Binance USD', 'https://www.paxos.com/busd/'),
-  msc: new Token(TESTNET, '0xb3ae8E5bccebD6F7002C3bF1D5713477B16f8791', 18, 'MSC', 'MyShitCoin', ''),
 }
 
 const tokens = (): TokenList => {

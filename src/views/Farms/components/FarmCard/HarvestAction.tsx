@@ -14,7 +14,7 @@ import useHarvestFarm from '../../hooks/useHarvestFarm'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
-  pid?: number,
+  pid?: number
   nextHarvestUntil?: number
 }
 
@@ -46,7 +46,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid, nextHarv
             await onReward()
             toastSuccess(
               `${t('Harvested')}!`,
-              t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'SPY' }),
+              t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
             )
           } catch (e) {
             toastError(

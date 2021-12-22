@@ -3,7 +3,7 @@ import { getPoolApr, getFarmApr } from 'utils/apr'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 
 jest.mock('../../config/constants/lpAprs.json', () => ({
-  '0x0ed7e52944161450477ee417de9cd3a859b14fd0': 10.5,
+  '0x2afd1d7dadefb7fe31364a4f57f704c1558c8edc': 10.5,
 }))
 
 describe('getPoolApr', () => {
@@ -28,7 +28,7 @@ describe('getFarmApr', () => {
     expect(lpRewardsApr).toEqual(0)
   })
   it(`returns null when APR is infinite`, () => {
-    const { cakeRewardsApr, lpRewardsApr } = getFarmApr(BIG_ZERO, BIG_ZERO, BIG_ZERO, BIG_ZERO, '')
+    const { cakeRewardsApr, lpRewardsApr } = getFarmApr(BIG_ZERO, BIG_ZERO, BIG_ZERO, BIG_ZERO,'')
     expect(cakeRewardsApr).toBeNull()
     expect(lpRewardsApr).toEqual(0)
   })

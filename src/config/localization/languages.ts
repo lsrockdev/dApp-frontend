@@ -10,7 +10,7 @@ export const ID: Language = { locale: 'id-ID', language: 'Bahasa Indonesia', cod
 // export const FI: Language = { locale: 'fi-FI', language: 'Suomalainen', code: 'fi' }
 // export const FIL: Language = { locale: 'fil-PH', language: 'Filipino', code: 'fil' }
 // export const FR: Language = { locale: 'fr-FR', language: 'Français', code: 'fr' }
-export const HI: Language = { locale: 'hi-IN', language: 'हिंदी', code: 'hi' }
+// export const HI: Language = { locale: 'hi-IN', language: 'हिंदी', code: 'hi' }
 // export const HU: Language = { locale: 'hu-HU', language: 'Magyar', code: 'hu' }
 // export const IT: Language = { locale: 'it-IT', language: 'Italiano', code: 'it' }
 // export const JA: Language = { locale: 'ja-JP', language: '日本語', code: 'ja' }
@@ -22,11 +22,11 @@ export const HI: Language = { locale: 'hi-IN', language: 'हिंदी', code
 // export const RO: Language = { locale: 'ro-RO', language: 'Română', code: 'ro' }
 // export const RU: Language = { locale: 'ru-RU', language: 'Русский', code: 'ru' }
 // export const SVSE: Language = { locale: 'sv-SE', language: 'Svenska', code: 'sv' }
-export const TA: Language = { locale: 'ta-IN', language: 'தமிழ்', code: 'ta' }
-export const TR: Language = { locale: 'tr-TR', language: 'Türkçe', code: 'tr' }
+// export const TA: Language = { locale: 'ta-IN', language: 'தமிழ்', code: 'ta' }
+// export const TR: Language = { locale: 'tr-TR', language: 'Türkçe', code: 'tr' }
 // export const UK: Language = { locale: 'uk-UA', language: 'Українська', code: 'uk' }
 // export const VI: Language = { locale: 'vi-VN', language: 'Tiếng Việt', code: 'vi' }
-export const ZHCN: Language = { locale: 'zh-CN', language: '简体中文', code: 'zh-cn' }
+// export const ZHCN: Language = { locale: 'zh-CN', language: '简体中文', code: 'zh-cn' }
 // export const ZHTW: Language = { locale: 'zh-TW', language: '繁體中文', code: 'zh-tw' }
 
 export const languages = {
@@ -40,7 +40,7 @@ export const languages = {
   // 'fi-FI': FI,
   // 'fil-PH': FIL,
   // 'fr-FR': FR,
-  'hi-IN': HI,
+  // 'hi-IN': HI,
   // 'hu-HU': HU,
   // 'it-IT': IT,
   // 'ja-JP': JA,
@@ -52,11 +52,11 @@ export const languages = {
   // 'ro-RO': RO,
   // 'ru-RU': RU,
   // 'sv-SE': SVSE,
-  'ta-IN': TA,
-  'tr-TR': TR,
+  // 'ta-IN': TA,
+  // 'tr-TR': TR,
   // 'uk-UA': UK,
   // 'vi-VN': VI,
-  'zh-CN': ZHCN,
+  // 'zh-CN': ZHCN,
   // 'zh-TW': ZHTW,
 }
 

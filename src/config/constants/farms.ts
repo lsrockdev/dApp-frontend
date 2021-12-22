@@ -9,25 +9,25 @@ const farms: SerializedFarmConfig[] = [
    */
    {
     pid: 0,
-    lpSymbol: 'BUSD-SPY',
+    lpSymbol: 'SPY-BUSD',
     lpAddresses: {
       97: '0xe9412a9809FadBbaCd8D1bd024E6280f05Bd2437',
-      56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+      56: '0x0e587eaeFC234965ef5b2219983E7Df06b42dAE3',
     },
-    token: serializedTokens.busd,
-    quoteToken: serializedTokens.spy,
+    token: serializedTokens.spy,
+    quoteToken: serializedTokens.busd,
   },
   {
     pid: 1,
     lpSymbol: 'SPY-BNB LP',
     lpAddresses: {
       97: '0xe890519b297700BB69a62F18AaA50cAc201A300C',
-      56: '0x0eD7e52944161450477ee417DE9Cd3a859b14fD0',
+      56: '0xfcB07994C68d986D4d534709314A021e56bBBFf0',
     },
     token: serializedTokens.spy,
     quoteToken: serializedTokens.wbnb,
   },
-    {
+  {
     pid: 3,
     lpSymbol: 'BUSD-BNB LP',
     lpAddresses: {
@@ -37,6 +37,7 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.busd,
     quoteToken: serializedTokens.wbnb,
   },
+
 ]
 
 export default farms
