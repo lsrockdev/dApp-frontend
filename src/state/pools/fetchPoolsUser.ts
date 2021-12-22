@@ -7,7 +7,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { simpleRpcProvider } from 'utils/providers'
 import BigNumber from 'bignumber.js'
 
-// Pool 0, Cake / Cake is a different kind of contract (master chef)
+// Pool 0, Spy / Spy is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
 const nonBnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol !== 'BNB')
 const bnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol === 'BNB')
@@ -20,7 +20,7 @@ export const fetchPoolsAllowance = async (account) => {
     name: 'allowance',
     params: [account, getAddress(pool.contractAddress)],
   }))
-
+ 
   const allowances = await multicall(erc20ABI, calls)
   return nonBnbPools.reduce(
     (acc, pool, index) => ({ ...acc, [pool.sousId]: new BigNumber(allowances[index]).toJSON() }),
@@ -66,7 +66,7 @@ export const fetchUserStakeBalances = async (account) => {
     {},
   )
 
-  // Cake / Cake pool
+  // Spy / Spy pool
   const { amount: masterPoolAmount } = await masterChefContract.userInfo('0', account)
 
   return { ...stakedBalances, 0: new BigNumber(masterPoolAmount.toString()).toJSON() }
@@ -87,7 +87,7 @@ export const fetchUserPendingRewards = async (account) => {
     {},
   )
 
-  // Cake / Cake pool
+  // Spy / Spy pool
   const pendingReward = await masterChefContract.pendingSpy('0', account)
 
   return { ...pendingRewards, 0: new BigNumber(pendingReward.toString()).toJSON() }
