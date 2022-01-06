@@ -39,6 +39,7 @@ import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
 const Home = lazy(() => import('./views/Farms'))
 const Referral = lazy(() => import('./views/Referral'))
 const Farms = lazy(() => import('./views/Farms'))
+const Nfts = lazy(() => import('./views/Nfts'))
 const FarmAuction = lazy(() => import('./views/FarmAuction'))
 const Lottery = lazy(() => import('./views/Lottery'))
 const Ifos = lazy(() => import('./views/Ifos'))
@@ -145,7 +146,7 @@ const App: React.FC = () => {
 
               {/* NFT */}
               <Route path="/nfts">
-                <NftMarket />
+                <Nfts />
               </Route>
 
               <Route path="/pancake-squad">

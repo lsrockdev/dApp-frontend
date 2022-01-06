@@ -20,6 +20,7 @@ import lists from './lists/reducer'
 import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 import nftMarketReducer from './nftMarket/reducer'
+import nftReducer from './nft'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
@@ -30,6 +31,7 @@ const store = configureStore({
     block: blockReducer,
     farms: farmsReducer,
     pools: poolsReducer,
+    nft: nftReducer,
     predictions: predictionsReducer,
     profile: profileReducer,
     teams: teamsReducer,

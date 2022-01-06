@@ -30,6 +30,7 @@ import {
   getNftSaleContract,
   getPancakeSquadContract,
   getErc721CollectionContract,
+  getNFTFactoryContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -100,6 +101,11 @@ export const useLotteryV2Contract = () => {
 export const useMasterchef = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getMasterchefContract(library.getSigner()), [library])
+}
+
+export const useNFTFactory = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getNFTFactoryContract(library.getSigner()), [library])
 }
 
 export const useSousChef = (id) => {

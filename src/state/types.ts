@@ -112,6 +112,52 @@ export interface Profile {
 
 // Slices states
 
+export interface SerializedNFTState {
+  userDataLoaded: boolean
+  loadArchivedData: boolean
+  
+  spyBalance?: SerializedBigNumber
+  castNFTAllowance?: SerializedBigNumber
+
+  nftBalance: SerializedNFTGego[]
+  stakedNFTBalance: SerializedNFTGego[]
+}
+
+export interface DeserializedNFTState {
+  userDataLoaded: boolean
+  loadArchivedData: boolean
+  
+  spyBalance?: BigNumber
+  castNFTAllowance?: BigNumber
+
+  nftBalance: DeserializedNFTGego[]
+  stakedNFTBalance: DeserializedNFTGego[]
+}
+
+export interface SerializedNFTGego {
+  staked: boolean
+  id: SerializedBigNumber
+  grade: number
+  lockedDays: number
+  blockNum: SerializedBigNumber
+  createdTime: number
+  quality: number
+  amount: SerializedBigNumber
+  efficiency?: SerializedBigNumber
+}
+
+export interface DeserializedNFTGego {
+  staked: boolean
+  id: BigNumber
+  grade: number
+  lockedDays: number
+  blockNum: BigNumber
+  createdTime: number
+  quality: number
+  amount: BigNumber
+  efficiency?: BigNumber
+}
+
 export interface SerializedFarmsState {
   data: SerializedFarm[]
   loadArchivedFarmsData: boolean
@@ -582,6 +628,7 @@ export interface State {
   block: BlockState
   farms: SerializedFarmsState
   pools: PoolsState
+  nft: SerializedNFTState
   predictions: PredictionsState
   profile: ProfileState
   teams: TeamsState

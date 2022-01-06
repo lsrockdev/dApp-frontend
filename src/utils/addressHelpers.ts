@@ -76,3 +76,12 @@ export const getPancakeSquadAddress = () => {
 export const getReferralAddress = () => {
   return getAddress(addresses.referral)
 }
+export const getNFTFactoryAddress = () => {
+  return getAddress(addresses.nftFactory)
+}
+export const getNFTMintroxyAddress = () => {
+  return getAddress(addresses.nftMintProxy)
+}
+export const getGeneralNFTRewardAddress = () => {
+  return getAddress(addresses.generalNFTReward)
+}

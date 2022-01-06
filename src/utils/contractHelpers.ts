@@ -29,6 +29,9 @@ import {
   getNftMarketAddress,
   getNftSaleAddress,
   getPancakeSquadAddress,
+  getNFTFactoryAddress,
+  getNFTMintroxyAddress,
+  getGeneralNFTRewardAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -64,6 +67,10 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollctionAbi from 'config/abi/erc721collection.json'
+import generalNFTReward from 'config/abi/generalNFTReward.json'
+import spyNFT from 'config/abi/spyNFT.json'
+import spyNFTFactory from 'config/abi/spyNFTFactory.json'
+import spyNFTMintProxy from 'config/abi/spyNFTMintProxy.json'
 import { ChainLinkOracleContract, FarmAuctionContract, PancakeProfileContract, PredictionsContract } from './types'
 
 const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
@@ -119,6 +126,19 @@ export const getLotteryV2Contract = (signer?: ethers.Signer | ethers.providers.P
 }
 export const getMasterchefContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(masterChef, getMasterChefAddress(), signer)
+}
+
+export const getSpyNFTRewardContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(generalNFTReward, getGeneralNFTRewardAddress(), signer)
+}
+export const getSpyNFTContract = (tokenAddress: string, signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(spyNFT, tokenAddress, signer)
+}
+export const getNFTFactoryContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(spyNFTFactory, getNFTFactoryAddress(), signer)
+}
+export const getNFTMintProxyContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(spyNFTMintProxy, getNFTMintroxyAddress(), signer)
 }
 export const getClaimRefundContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(claimRefundAbi, getClaimRefundAddress(), signer)
