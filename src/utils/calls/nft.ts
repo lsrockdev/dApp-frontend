@@ -1,10 +1,12 @@
 import BigNumber from 'bignumber.js'
 import getGasPrice from 'utils/getGasPrice'
 import { callWithEstimateGas } from 'utils/calls/estimateGas'
+import tokens from 'config/constants/tokens'
+import { getSpyNFTContract } from 'utils/contractHelpers'
 
 
 export type CastedNFTData = {
-  id: BigNumber,
+  id: string,
   amount: BigNumber,
   blockNum: BigNumber,
   grade: number,
@@ -33,7 +35,7 @@ export const castNFT = async (nftFactory, spyAmount): Promise<CastedNFTData|null
         const args = ev[0]["args"];
 
         return {
-          id: new BigNumber(args["id"]._hex),
+          id: new BigNumber(args["id"]._hex).toJSON(),
           amount: new BigNumber(args["amount"]._hex),
           blockNum: new BigNumber(args["blockNum"]._hex),
           grade: new BigNumber(args["grade"]._hex).toNumber(),
@@ -45,4 +47,37 @@ export const castNFT = async (nftFactory, spyAmount): Promise<CastedNFTData|null
       /* eslint-enable dot-notation */
     }
     return null;
+}
+
+export const burnNFT = async (nftFactory, tokenId) => {
+
+  const gasPrice = getGasPrice()
+
+  const tx = await callWithEstimateGas(nftFactory, 'burn', [tokenId], {
+    gasPrice,
+  })
+  const receipt = await tx.wait()
+  return receipt.status
+}
+
+export const stakeNFT = async (nftReward, tokenId) => {
+
+  const gasPrice = getGasPrice()
+
+  const tx = await callWithEstimateGas(nftReward, 'stake', [tokenId], {
+    gasPrice,
+  })
+  const receipt = await tx.wait()
+  return receipt.status
+}
+
+export const unstakeNFT = async (nftReward, tokenId) => {
+
+  const gasPrice = getGasPrice()
+
+  const tx = await callWithEstimateGas(nftReward, 'unstake', [tokenId], {
+    gasPrice,
+  })
+  const receipt = await tx.wait()
+  return receipt.status
 }

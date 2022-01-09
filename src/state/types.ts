@@ -119,8 +119,13 @@ export interface SerializedNFTState {
   spyBalance?: SerializedBigNumber
   castNFTAllowance?: SerializedBigNumber
 
+  rewardEarned?: SerializedBigNumber
+  nextHarvestUntil?: number
+
   nftBalance: SerializedNFTGego[]
-  stakedNFTBalance: SerializedNFTGego[]
+
+  factoryAllowance?: boolean
+  rewardAllowance?: boolean
 }
 
 export interface DeserializedNFTState {
@@ -130,13 +135,17 @@ export interface DeserializedNFTState {
   spyBalance?: BigNumber
   castNFTAllowance?: BigNumber
 
+  rewardEarned?: BigNumber
+  nextHarvestUntil?: number
+
   nftBalance: DeserializedNFTGego[]
-  stakedNFTBalance: DeserializedNFTGego[]
+  factoryAllowance?: boolean
+  rewardAllowance?: boolean
 }
 
 export interface SerializedNFTGego {
   staked: boolean
-  id: SerializedBigNumber
+  id: string
   grade: number
   lockedDays: number
   blockNum: SerializedBigNumber
@@ -148,7 +157,7 @@ export interface SerializedNFTGego {
 
 export interface DeserializedNFTGego {
   staked: boolean
-  id: BigNumber
+  id: string
   grade: number
   lockedDays: number
   blockNum: BigNumber

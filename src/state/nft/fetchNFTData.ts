@@ -1,8 +1,11 @@
 import BigNumber from 'bignumber.js'
+import spyNFTABI from 'config/abi/spyNFT.json'
 import nftFactoryABI from 'config/abi/spyNFTFactory.json'
 import multicall from 'utils/multicall'
-import { getNFTFactoryAddress } from 'utils/addressHelpers'
+import { getGeneralNFTRewardAddress, getNFTFactoryAddress } from 'utils/addressHelpers'
 import { getFixRate } from 'utils/nftHelpers'
+import { getSpyNFTContract } from 'utils/contractHelpers'
+import tokens from 'config/constants/tokens'
 
 export type PublicNFTData = {
     id: SerializedBigNumber
@@ -13,6 +16,7 @@ export type PublicNFTData = {
     quality: number
     amount: SerializedBigNumber
     efficiency: SerializedBigNumber
+    staked: boolean
 }
 
 export const fetchNFTGegos = async (tokenIds: string[]): Promise<PublicNFTData[]> => {
@@ -35,9 +39,38 @@ export const fetchNFTGegos = async (tokenIds: string[]): Promise<PublicNFTData[]
             createdTime: new BigNumber(rawNFTGego.createdTime?._hex).toNumber(),
             quality,
             amount: new BigNumber(rawNFTGego.amount?._hex).toJSON(),
-            efficiency
+            efficiency,
+            staked: false
         }
     })
 
     return parsedNFTGegos;
+}
+
+export const fetchNFTAllowances = async (account: string): Promise<{factoryAllowance: boolean, rewardAllowance: boolean}> => {
+    const nftAddress = tokens.spynft.address
+    const nftFactoryAddress = getNFTFactoryAddress();
+    const generalNFTRewardAddress = getGeneralNFTRewardAddress()
+
+    const calls = [
+        {
+          address: nftAddress,
+          name: 'isApprovedForAll',
+          params: [account, nftFactoryAddress],
+        },
+        {
+          address: nftAddress,
+          name: 'isApprovedForAll',
+          params: [account, generalNFTRewardAddress],
+        },
+    ];
+
+    const [[factoryAllowance], [rewardAllowance]] = await multicall(spyNFTABI, calls)
+
+    console.log('isApprovedForAll', factoryAllowance, rewardAllowance)
+
+    return {
+        factoryAllowance,
+        rewardAllowance
+    };
 }

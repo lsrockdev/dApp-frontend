@@ -11,7 +11,7 @@ import { useERC20 } from 'hooks/useContract'
 import useToast from 'hooks/useToast'
 import { useAppDispatch } from 'state'
 import { DeserializedNFTGego } from 'state/types'
-import { useNFTs } from 'state/nft/hooks'
+import { useNFTCastAllowance, useNFTs } from 'state/nft/hooks'
 import { fetchNFTUserBalanceDataAsync, fetchNFTUserDataAsync } from 'state/nft'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getNFTMintroxyAddress } from 'utils/addressHelpers'
@@ -68,7 +68,7 @@ const CastNFT: React.FC<CastNFTProps> = ({account}) => {
     const [requestedApproval, setRequestedApproval] = useState(false)
     const [pendingTx, setPendingTx] = useState(false)
     const { balance: userBalance, fetchStatus: userBalanceFetchStatus } = useTokenBalance(tokens.spy.address)
-    const { castNFTAllowance } = useNFTs()
+    const castNFTAllowance = useNFTCastAllowance()
     const { balance: spyBalance, fetchStatus: spyFetchStatus } = useTokenBalance(tokens.spy.address)
 
     const isApproved = account && castNFTAllowance && castNFTAllowance.isGreaterThan(0);

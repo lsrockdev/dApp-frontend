@@ -20,7 +20,7 @@ const Nfts: React.FC = () => {
                 <Flex flexWrap="wrap" alignItems="stretch">
                     <NFTCharacters />
                     <CastNFT account={account}/>
-                    <MyNFTs />
+                    <MyNFTs account={account}/>
                 </Flex>
             </Page>
         </>

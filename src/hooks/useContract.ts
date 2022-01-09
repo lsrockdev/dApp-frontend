@@ -31,6 +31,8 @@ import {
   getPancakeSquadContract,
   getErc721CollectionContract,
   getNFTFactoryContract,
+  getSpyNFTContract,
+  getSpyNFTRewardContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -106,6 +108,16 @@ export const useMasterchef = () => {
 export const useNFTFactory = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getNFTFactoryContract(library.getSigner()), [library])
+}
+
+export const useGeneralNFTReward = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getSpyNFTRewardContract(library.getSigner()), [library])
+}
+
+export const useSpyNFT = (address: string) => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getSpyNFTContract(address, library.getSigner()), [address, library])
 }
 
 export const useSousChef = (id) => {
