@@ -1,76 +1,64 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Modal, Heading, Flex, Text, InjectedModalProps } from '@pancakeswap/uikit'
+import { Button, Flex, InjectedModalProps, ModalHeader, ModalTitle, ModalCloseButton, ModalContainer, ModalBody, ModalBackButton, Heading } from '@pancakeswap/uikit'
 import { nftGrades } from 'config/constants/nft';
 import tokens from 'config/constants/tokens';
+import { NFTGradeConfig } from 'config/constants/nft/types';
 import { ModalActions } from 'components/Modal'
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state';
 import { DeserializedNFTGego } from 'state/types'
-import { fetchNFTAllowancesAsync, fetchNFTUserBalanceDataAsync } from 'state/nft';
-import { useNFTRewardAllowance } from 'state/nft/hooks';
+import { fetchNFTUserBalanceDataAsync } from 'state/nft';
 import { BIG_TEN } from 'utils/bigNumber';
 import { useSpyNFT } from 'hooks/useContract';
 import useToast from 'hooks/useToast';
-import useApproveGeneralReward from '../hooks/useApproveGeneralReward';
-import useStakeNFT from '../hooks/useStakeNFT';
 import useUnstakeNFT from '../hooks/useUnstakeNFT';
+import NFTGradeRow from './NFTGradeRow';
+import NFTSelector from './NFTSelector';
 
-const ModalInnerContainer = styled(Flex)`
-  flex-direction: column;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: 0px 12px;
-    min-width: 400px;
-  }
+enum UnstakeModalView {
+  main,
+  list,
+}
+
+
+const StyledModalContainer = styled(ModalContainer)`
+  max-width: 420px;
+  width: 100%;
 `
 
-const ModalContentContainer = styled(Flex)`
-  padding: 12px;
-  background: ${({ theme }) => theme.colors.backgroundAlt2};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: ${({theme}) => theme.radii.default};
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    padding: 12px;
-  }
-`
-
-const GradeImageWrapper = styled.div`
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-right: 12px;
-  > img {
-    max-height: 80px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    > img {
-      height: 80px;
-    }
+const StyledModalBody = styled(ModalBody)`
+  padding: 24px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `
 
 interface UnstakeNFTModalProps {
-  gego: DeserializedNFTGego
+  gego?: DeserializedNFTGego
+  gegos?: DeserializedNFTGego[]
   account: string
 }
 
-const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ account, gego, onDismiss }) => {
+const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ account, gego, gegos, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
-  const gradeConfig = nftGrades.find((c) => c.level === gego.grade)
+  const [modalView, setModalView] = useState<UnstakeModalView>(UnstakeModalView.main)
+  const [selectedGego, setSelectedGego] = useState(gego || (gegos && gegos.length > 0 ? gegos[0]: null))
   const nftContract = useSpyNFT(tokens.spynft.address)
   const { onUnstakeNFT } = useUnstakeNFT()
-
   const handleUnstakeNFT = useCallback(async() => {
 
     try {
       setPendingTx(true)
-      await onUnstakeNFT(gego.id)
+      await onUnstakeNFT(selectedGego.id)
       dispatch(fetchNFTUserBalanceDataAsync({account}))
       onDismiss()
     } catch (e) {
@@ -84,42 +72,45 @@ const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ 
     } finally {
       setPendingTx(false)
     }
-  }, [onUnstakeNFT, onDismiss, toastError, t, dispatch, account, gego])
+  }, [onUnstakeNFT, onDismiss, toastError, t, dispatch, account, selectedGego])
 
   return (
-    <Modal title={t('Unstake your NFT card')} onDismiss={onDismiss}>
-
-      <ModalInnerContainer>
-
-        <ModalContentContainer alignItems="center" justifyContent="start">
-          { gradeConfig && (
-            
-            <GradeImageWrapper>
-              <img src={`/images/nft/${gradeConfig.image}`} alt={gradeConfig.grade}/>
-            </GradeImageWrapper>
+    <StyledModalContainer minWidth="320px">
+      <ModalHeader>
+        <ModalTitle>
+          { modalView === UnstakeModalView.list && (
+            <ModalBackButton onBack={() => setModalView(UnstakeModalView.main)} />
           )}
-          <Flex flexDirection="column" alignItems="start">
-            <Heading textAlign="center" color="primary" scale="md">
-              {gradeConfig.grade.toString()}
-            </Heading>
-            <Text fontSize="14px" color="secondary" mr="8px">{t('Efficiency')}: {gego.efficiency.div(1000).toFixed(2)}% - {t('Power')}:{gego.efficiency.multipliedBy(gego.amount).div(BIG_TEN.pow(tokens.spy.decimals)).div(100000).toFixed(2)}</Text>
-          </Flex>
+          <Heading>{ modalView === UnstakeModalView.main ? 'Unstake your NFT card' : 'Choose a NFT card'}</Heading>
+        </ModalTitle>
+        <ModalCloseButton onDismiss={onDismiss} />
+      </ModalHeader>
 
-        </ModalContentContainer>
-      <ModalActions>
-        <Button scale="md" variant="secondary" onClick={onDismiss} width="100%">
-          {t('Cancel')}
-        </Button>
-        <Button
-          scale="md" variant="primary" width="100%"
-          onClick={handleUnstakeNFT}
-          disabled={pendingTx}
-        >
-          {pendingTx ? t('Processing...') : t('Confirm')}
-        </Button>
-      </ModalActions>
-      </ModalInnerContainer>
-    </Modal>
+      { modalView === UnstakeModalView.main ? (
+      <StyledModalBody>
+        <NFTGradeRow gego={selectedGego} spyDecimals={tokens.spy.decimals} onSelect={() => setModalView(UnstakeModalView.list)} selectable={gegos && gegos.length > 0} />
+        <ModalActions>
+          <Button scale="md" variant="secondary" onClick={onDismiss} width="100%">
+            {t('Cancel')}
+          </Button>
+          <Button
+            scale="md" variant="primary" width="100%"
+            onClick={handleUnstakeNFT}
+            disabled={pendingTx || !selectedGego}
+          >
+            {pendingTx ? t('Processing...') : t('Confirm')}
+          </Button>
+        </ModalActions>
+      </StyledModalBody>
+      ) : (
+      <StyledModalBody>
+        <NFTSelector gegos={gegos} onSelect={(g) => {
+          setSelectedGego(g)
+          setModalView(UnstakeModalView.main)
+        }} />
+      </StyledModalBody>
+      )}
+    </StyledModalContainer>
   )
 }
 

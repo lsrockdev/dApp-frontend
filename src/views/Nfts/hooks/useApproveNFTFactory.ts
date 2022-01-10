@@ -9,7 +9,6 @@ const useApproveNFTFactory = (nftContract) => {
   const nftFactoryAddress = getNFTFactoryAddress()
   
   const handleApprove = useCallback(async () => {
-    console.log('contract', nftContract)
     const tx = await callWithGasPrice(nftContract, 'setApprovalForAll', [nftFactoryAddress, true])
     const receipt = await tx.wait()
     return receipt.status

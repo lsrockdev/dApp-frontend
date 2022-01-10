@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { SerializedNFTState } from 'state/types'
 import { fetchNFTBalance, fetchStakedNFTs } from './fetchNFT'
 import { fetchNFTGegos, fetchNFTAllowances, PublicNFTData } from './fetchNFTData'
-import { fetchGeneralNFTReward, PublicNFTRewardData } from './fetchNFTReward'
+import { fetchGeneralNFTRewardUserData, fetchGeneralNFTRewardPublicData, PublicNFTRewardUserData, PublicNFTRewardPoolData } from './fetchNFTReward'
 import { fetchPublicNFTData } from './fetchPublicNFTData'
 
 const initialState: SerializedNFTState = {
@@ -33,11 +33,19 @@ export const fetchNFTUserDataAsync = createAsyncThunk<NFTUserDataResponse, { acc
     },
 )
 
-export const fetchNFTRewardsDataAsync = createAsyncThunk<PublicNFTRewardData, { account: string}>(
-    'nft/fetchNFTRewardsDataAsync',
-    async ({account}) => {
-        const publicData = await fetchGeneralNFTReward(account)
+export const fetchNFTPoolPublicDataAsync = createAsyncThunk<PublicNFTRewardPoolData>(
+    'nft/fetchNFTPoolPublicDataAsync',
+    async () => {
+        const publicData = await fetchGeneralNFTRewardPublicData()
         return publicData
+    },
+)
+
+export const fetchNFTPoolUserDataAsync = createAsyncThunk<PublicNFTRewardUserData, { account: string}>(
+    'nft/fetchNFTPoolUserDataAsync',
+    async ({account}) => {
+        const userData = await fetchGeneralNFTRewardUserData(account)
+        return userData
     },
 )
 
@@ -50,7 +58,6 @@ export const fetchNFTUserBalanceDataAsync = createAsyncThunk<PublicNFTData[], { 
         tokenGegos.forEach((gego, index) =>  {
             tokenGegos[index].staked = tokenIdsStaked.indexOf(gego.id) !== -1
         })
-        console.log('gegos', tokenGegos)
         return tokenGegos;
     },
 )
@@ -77,9 +84,17 @@ export const nftSlice = createSlice({
             state.spyBalance = action.payload.spyBalance
             state.castNFTAllowance = action.payload.castNFTAllowance
         })
-        builder.addCase(fetchNFTRewardsDataAsync.fulfilled, (state,action) => {
-            state.rewardEarned = action.payload.earned
-            state.nextHarvestUntil = action.payload.nextHarvestUntil
+        builder.addCase(fetchNFTPoolPublicDataAsync.fulfilled, (state,action) => {
+            state.poolPublicData = {
+                ...state.poolPublicData,
+                ...action.payload
+            }
+        })
+        builder.addCase(fetchNFTPoolUserDataAsync.fulfilled, (state,action) => {
+            state.poolUserData = {
+                ...state.poolUserData,
+                ...action.payload
+            }
         })
         builder.addCase(fetchNFTUserBalanceDataAsync.fulfilled, (state,action) => {
             state.nftBalance = action.payload.map((gego) => {
@@ -91,8 +106,6 @@ export const nftSlice = createSlice({
         builder.addCase(fetchNFTAllowancesAsync.fulfilled, (state,action) => {
             state.rewardAllowance = action.payload.rewardAllowance
             state.factoryAllowance = action.payload.factoryAllowance
-
-            console.log('state', state, action.payload);
         })
     }
 })

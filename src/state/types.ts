@@ -112,6 +112,41 @@ export interface Profile {
 
 // Slices states
 
+export interface SerialzedNFTPoolPublicData {
+  harvestInterval: number
+  periodFinish: number
+  rewardPerTokenStored: SerializedBigNumber
+  rewardRate: SerializedBigNumber
+  rewardPrecisionFactor: SerializedBigNumber
+  totalSupply: SerializedBigNumber
+  totalBalance: SerializedBigNumber
+  harvestFee: SerializedBigNumber
+}
+
+export interface SerialzedNFTPoolUserData {
+  balance: SerializedBigNumber
+  earning: SerializedBigNumber
+  nextHarvestUntil: number
+}
+
+export interface DeserialzedNFTPoolPublicData {
+  harvestInterval: number
+  periodFinish: number
+  rewardPerTokenStored: BigNumber
+  rewardRate: BigNumber
+  rewardPrecisionFactor: BigNumber
+  totalSupply: BigNumber
+  totalBalance: BigNumber
+  harvestFee: BigNumber
+}
+
+export interface DeserialzedNFTPoolUserData {
+  balance: BigNumber
+  earning: BigNumber
+  nextHarvestUntil: number
+}
+
+
 export interface SerializedNFTState {
   userDataLoaded: boolean
   loadArchivedData: boolean
@@ -119,8 +154,8 @@ export interface SerializedNFTState {
   spyBalance?: SerializedBigNumber
   castNFTAllowance?: SerializedBigNumber
 
-  rewardEarned?: SerializedBigNumber
-  nextHarvestUntil?: number
+  poolPublicData?: SerialzedNFTPoolPublicData
+  poolUserData?: SerialzedNFTPoolUserData
 
   nftBalance: SerializedNFTGego[]
 
@@ -135,8 +170,8 @@ export interface DeserializedNFTState {
   spyBalance?: BigNumber
   castNFTAllowance?: BigNumber
 
-  rewardEarned?: BigNumber
-  nextHarvestUntil?: number
+  poolPublicData?: DeserialzedNFTPoolPublicData
+  poolUserData?: DeserialzedNFTPoolUserData
 
   nftBalance: DeserializedNFTGego[]
   factoryAllowance?: boolean

@@ -81,3 +81,14 @@ export const unstakeNFT = async (nftReward, tokenId) => {
   const receipt = await tx.wait()
   return receipt.status
 }
+
+export const harvestNFT = async (nftReward) => {
+
+  const gasPrice = getGasPrice()
+
+  const tx = await callWithEstimateGas(nftReward, 'harvest', [], {
+    gasPrice,
+  })
+  const receipt = await tx.wait()
+  return receipt.status
+}

@@ -67,8 +67,6 @@ export const fetchNFTAllowances = async (account: string): Promise<{factoryAllow
 
     const [[factoryAllowance], [rewardAllowance]] = await multicall(spyNFTABI, calls)
 
-    console.log('isApprovedForAll', factoryAllowance, rewardAllowance)
-
     return {
         factoryAllowance,
         rewardAllowance
