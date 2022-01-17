@@ -30,14 +30,14 @@ export const mainnetTokens = {
   syrup: new Token(MAINNET, '0x009cF7bC57584b7998236eff51b98A168DceA9B0', 18, 'SYRUP', 'SyrupBar Token', 'https://pancakeswap.finance/'),
   babycake: new Token(MAINNET, '0xdB8D30b74bf098aF214e862C90E647bbB1fcC58c', 18, 'BABYCAKE', 'Baby Cake Token', 'https://babycake.app/'),
   spy: new Token(MAINNET, '0x17fd3cAa66502C6F1CbD5600D8448f3aF8f2ABA1', 0, 'SPY', 'Smarty Pay Token', 'https://app.spy-token.io'),
-  spynft: new Token(MAINNET, '0x42ccf214877f6d95Ecf38d9daaab208106841620', 0, 'SPY-NFT', 'SPY NFT', 'http://test.smarty-pay.com'),
+  spynft: new Token(MAINNET, '0xa7aa050D7B6bc477e4a0128BA657380c944b9404', 0, 'SPY-NFT', 'SPY NFT', 'http://test.smarty-pay.com'),
 }
 export const testnetTokens = {
   wbnb: new Token(TESTNET, '0xf9a7A2b01Bf758776703677719F8aCf018600070', 18, 'WBNB', 'Wrapped BNB', 'https://www.binance.com/'),
   cake: new Token(TESTNET, '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe', 0, 'CAKE', 'PancakeSwap Token', 'https://pancakeswap.finance/'),
   spy: new Token(TESTNET, '0x6F25144001Ce324E745c3FF25a646A292883feD5', 0, 'SPY', 'SmartyPay Token', 'http://test.smarty-pay.com'),
   busd: new Token(TESTNET, '0x2aFD1d7DADEfb7fE31364A4f57f704c1558C8Edc', 18, 'BUSD', 'Binance USD', 'https://www.paxos.com/busd/'),
-  spynft: new Token(TESTNET, '0x42ccf214877f6d95Ecf38d9daaab208106841620', 0, 'SPY-NFT', 'SPY NFT', 'http://test.smarty-pay.com'),
+  spynft: new Token(TESTNET, '0xa7aa050D7B6bc477e4a0128BA657380c944b9404', 0, 'SPY-NFT', 'SPY NFT', 'http://test.smarty-pay.com'),
 }
 
 const tokens = (): TokenList => {

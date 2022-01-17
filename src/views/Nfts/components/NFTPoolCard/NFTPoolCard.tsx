@@ -5,6 +5,7 @@ import { useTranslation } from 'contexts/Localization';
 import ExpandableSectionButton from 'components/ExpandableSectionButton';
 import { useNFTBalances, useNFTPoolPublicData, useNFTPoolUserData, usePollNFTAllowanceData, usePollNFTPublicData } from 'state/nft/hooks';
 import useInterval from 'hooks/useInterval';
+import { getFullDisplayBalance } from 'utils/formatBalance';
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
 import CardActionsContainer from './CardActionsContainer'
@@ -85,6 +86,11 @@ const NFTPoolCard: React.FC<NFTPoolCardProps> = ({account}) => {
               <Skeleton height={24} width={80} />
             )}
           </Text>
+        </Flex>
+        <Flex justifyContent="space-between">
+          <Text>{t('Total Power Staked')}:</Text>
+          {/* <Text>{t('APR will be reset once the countdown is over')}:</Text> */}
+          <Text bold>{getFullDisplayBalance(poolData.totalSupply, 0)}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>

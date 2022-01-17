@@ -11,6 +11,7 @@ import { getFullDisplayBalance } from 'utils/formatBalance';
 import { BIG_TEN } from 'utils/bigNumber';
 import useToast from 'hooks/useToast';
 import { useSpyNFT } from 'hooks/useContract';
+import useInterval from 'hooks/useInterval';
 import useApproveNFTFactory from '../../hooks/useApproveNFTFactory';
 import StakeNFTModal from '../StakeNFTModal';
 import UnstakeNFTModal from '../UnstakeNFTModal';
@@ -25,7 +26,22 @@ const CardInnerContainer = styled(Flex)`
   padding: 24px;
 `
 
+const Countdown = styled(Text)`
+  position: absolute;
+  display: flex;
+  background: rgba(0,0,0,.8);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: monospace,sans-serif;
+  bottom: 5%;
+  right: 10%;
+  padding: 4px 8px;
+  border-radius: 8px;
+`
+
 const GradeImageWrapper = styled.div`
+  position: relative;
 `
 
 interface NFTCardProps {
@@ -43,6 +59,34 @@ const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, general
   const [requestedNFTFactoryApproval, setRequestedNFTFactoryApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
   const nftContract = useSpyNFT(tokens.spynft.address)
+
+  const [countdown, setCountdown] = useState('')
+
+  useInterval(() => {
+    
+    if (gego) {
+      const target = gego.createdTime + gego.lockedDays * 86400
+      const now = Math.floor(new Date().getTime() / 1000);
+      const diffTime = target - now;
+      if (diffTime > 0) {
+        const duration = diffTime;
+        const day = Math.floor(duration / 86400);
+        const hour = Math.floor((duration % 86400) / 3600);
+        const min = Math.floor((duration % 3600) / 60);
+        const sec = duration % 60;
+
+        const dayS = day < 10 ? `0${day}`:`${day}`;
+        const hourS = hour < 10 ? `0${hour}`:`${hour}`;
+        const minS = min < 10 ? `0${min}`:`${min}`;
+        const secS = sec < 10 ? `0${sec}`:`${sec}`;
+        setCountdown(`${dayS}:${hourS}:${minS}:${secS}`);
+      } else {
+        setCountdown('');
+      }
+    } else {
+      setCountdown('');
+    }
+  }, 1000)
 
   const isNFTFactoryApproved = account && factoryAllowed;
 
@@ -96,6 +140,12 @@ const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, general
         { gradeConfig && (
           <GradeImageWrapper>
             <img src={`/images/nft/${gradeConfig.image}`} alt={gradeConfig.grade}/>
+
+            { countdown !== '' && (
+              <Countdown>
+                {countdown}
+              </Countdown>
+            )}
           </GradeImageWrapper>
         )}
 
