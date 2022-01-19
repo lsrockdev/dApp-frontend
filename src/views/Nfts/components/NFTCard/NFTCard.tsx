@@ -54,7 +54,7 @@ interface NFTCardProps {
 const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, generalRewardAllowed}) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { toastError } = useToast()
+  const { toastError, toastInfo } = useToast()
   const gradeConfig = nftGrades.find((c) => c.level === gego.grade)
   const [requestedNFTFactoryApproval, setRequestedNFTFactoryApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
@@ -103,6 +103,10 @@ const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, general
   const [onPresentDecomposeNFTModal] = useModal(
     <DecomposeNFTModal gego={gego} account={account} />
   )
+
+  const handleSell = useCallback(async() => {
+    toastInfo(t('Marketplace'), t('Coming soon in marketplace'))
+  }, [toastInfo, t])
 
   const handleApproveNFTFactory = useCallback(async() => {
     try {
@@ -177,7 +181,7 @@ const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, general
               {t('Unstake')}
             </Button>
           )}
-          <Button scale="sm" ml="8px" width="100%">
+          <Button scale="sm" ml="8px" width="100%" onClick={handleSell}>
             {t('Sell')}
           </Button>
         </Flex>

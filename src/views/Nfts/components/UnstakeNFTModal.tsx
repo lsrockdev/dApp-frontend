@@ -5,6 +5,7 @@ import { nftGrades } from 'config/constants/nft';
 import tokens from 'config/constants/tokens';
 import { NFTGradeConfig } from 'config/constants/nft/types';
 import { ModalActions } from 'components/Modal'
+import Dots from 'components/Loader/Dots';
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state';
 import { DeserializedNFTGego } from 'state/types'
@@ -48,7 +49,7 @@ interface UnstakeNFTModalProps {
 const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ account, gego, gegos, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
   const [modalView, setModalView] = useState<UnstakeModalView>(UnstakeModalView.main)
   const [selectedGego, setSelectedGego] = useState(gego || (gegos && gegos.length > 0 ? gegos[0]: null))
@@ -60,6 +61,7 @@ const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ 
       setPendingTx(true)
       await onUnstakeNFT(selectedGego.id)
       dispatch(fetchNFTUserBalanceDataAsync({account}))
+      toastSuccess(t('Success'), t('Your NFT #%id% has been unstaked', {id: selectedGego.id}))
       onDismiss()
     } catch (e) {
       if (typeof e === 'object' && 'message' in e) {
@@ -72,7 +74,7 @@ const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ 
     } finally {
       setPendingTx(false)
     }
-  }, [onUnstakeNFT, onDismiss, toastError, t, dispatch, account, selectedGego])
+  }, [onUnstakeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, selectedGego])
 
   return (
     <StyledModalContainer minWidth="320px">
@@ -98,7 +100,9 @@ const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ 
             onClick={handleUnstakeNFT}
             disabled={pendingTx || !selectedGego}
           >
-            {pendingTx ? t('Processing...') : t('Confirm')}
+            {pendingTx ? (
+              <Dots>{t('Processing')}</Dots>
+            ) : t('Confirm')}
           </Button>
         </ModalActions>
       </StyledModalBody>

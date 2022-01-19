@@ -13,6 +13,7 @@ import { useNFTRewardAllowance } from 'state/nft/hooks';
 import { BIG_TEN } from 'utils/bigNumber';
 import { useSpyNFT } from 'hooks/useContract';
 import useToast from 'hooks/useToast';
+import Dots from 'components/Loader/Dots';
 import useApproveGeneralReward from '../hooks/useApproveGeneralReward';
 import useStakeNFT from '../hooks/useStakeNFT';
 import NFTGradeRow from './NFTGradeRow';
@@ -45,7 +46,7 @@ interface StakeNFTModalProps {
 const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ account, gego, gegos, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [modalView, setModalView] = useState<StakeModalView>(StakeModalView.main)
   const [pendingTx, setPendingTx] = useState(false)
@@ -76,6 +77,7 @@ const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ acco
       setPendingTx(true)
       await onStakeNFT(selectedGego.id)
       dispatch(fetchNFTUserBalanceDataAsync({account}))
+      toastSuccess(t('Success'), t('Your NFT #%id% has been staked', {id: selectedGego.id}))
       onDismiss()
     } catch (e) {
       if (typeof e === 'object' && 'message' in e) {
@@ -88,7 +90,7 @@ const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ acco
     } finally {
       setPendingTx(false)
     }
-  }, [onStakeNFT, onDismiss, toastError, t, dispatch, account, selectedGego])
+  }, [onStakeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, selectedGego])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
@@ -97,7 +99,9 @@ const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ acco
         onClick={handleStakeNFT}
         disabled={pendingTx || !selectedGego}
       >
-        {pendingTx ? t('Processing...') : t('Confirm')}
+        {pendingTx ? (
+          <Dots>{t('Processing')}</Dots>
+        ) : t('Confirm')}
       </Button>
     ) : (
       <Button scale="md" variant="primary" width="100%" disabled={requestedApproval} onClick={handleApprove}>

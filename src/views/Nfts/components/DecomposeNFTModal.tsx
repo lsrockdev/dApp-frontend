@@ -4,6 +4,7 @@ import { Button, Modal, Heading, Flex, Text, InjectedModalProps } from '@pancake
 import { nftGrades } from 'config/constants/nft';
 import tokens from 'config/constants/tokens';
 import { ModalActions } from 'components/Modal'
+import Dots from 'components/Loader/Dots';
 import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state';
 import { DeserializedNFTGego } from 'state/types'
@@ -47,7 +48,7 @@ interface DecomposeNFTModalProps {
 const DecomposeNFTModal: React.FC<InjectedModalProps & DecomposeNFTModalProps> = ({ account, gego, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
   const gradeConfig = nftGrades.find((c) => c.level === gego.grade)
@@ -79,6 +80,10 @@ const DecomposeNFTModal: React.FC<InjectedModalProps & DecomposeNFTModalProps> =
       setPendingTx(true)
       await onDecomposeNFT(gego.id)
       dispatch(fetchNFTUserBalanceDataAsync({account}))
+      toastSuccess(
+        `${t('Success')}!`,
+        t('%amount% %symbol% have been sent to your wallet!', { amount: getFullDisplayBalance(gego.amount, tokens.spy.decimals), symbol: 'SPY' }),
+      )
       onDismiss()
     } catch (e) {
       if (typeof e === 'object' && 'message' in e) {
@@ -91,7 +96,7 @@ const DecomposeNFTModal: React.FC<InjectedModalProps & DecomposeNFTModalProps> =
     } finally {
       setPendingTx(false)
     }
-  }, [onDecomposeNFT, onDismiss, toastError, t, dispatch, account, gego])
+  }, [onDecomposeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, gego])
 
   const renderApprovalOrDecomposeButton = () => {
     return isApproved ? (
@@ -100,7 +105,9 @@ const DecomposeNFTModal: React.FC<InjectedModalProps & DecomposeNFTModalProps> =
         onClick={handleDecomposeNFT}
         disabled={pendingTx}
       >
-        {pendingTx ? t('Processing...') : t('Confirm')}
+        {pendingTx ? (
+          <Dots>{t('Processing')}</Dots>
+        ) : t('Confirm')}
       </Button>
     ) : (
       <Button scale="md" variant="primary" width="100%" disabled={requestedApproval} onClick={handleApprove}>
