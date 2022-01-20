@@ -28,6 +28,7 @@ import FarmTabButtons from './components/FarmTabButtons'
 import { RowProps } from './components/FarmTable/Row'
 import ToggleView from './components/ToggleView/ToggleView'
 import { DesktopColumnSchema } from './components/types'
+import NFTPoolCard from '../Nfts/components/NFTPoolCard/NFTPoolCard'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -334,6 +335,7 @@ const Farms: React.FC = () => {
               removed={false}
             />
           ))}
+          <NFTPoolCard account={account} />
         </Route>
         <Route exact path={`${path}/history`}>
           {chosenFarmsMemoized.map((farm) => (

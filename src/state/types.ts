@@ -112,6 +112,96 @@ export interface Profile {
 
 // Slices states
 
+export interface SerialzedNFTPoolPublicData {
+  harvestInterval: number
+  periodFinish: number
+  rewardPerTokenStored: SerializedBigNumber
+  rewardRate: SerializedBigNumber
+  rewardPrecisionFactor: SerializedBigNumber
+  totalSupply: SerializedBigNumber
+  totalBalance: SerializedBigNumber
+  harvestFee: SerializedBigNumber
+}
+
+export interface SerialzedNFTPoolUserData {
+  balance: SerializedBigNumber
+  earning: SerializedBigNumber
+  nextHarvestUntil: number
+}
+
+export interface DeserialzedNFTPoolPublicData {
+  harvestInterval: number
+  periodFinish: number
+  rewardPerTokenStored: BigNumber
+  rewardRate: BigNumber
+  rewardPrecisionFactor: BigNumber
+  totalSupply: BigNumber
+  totalBalance: BigNumber
+  harvestFee: BigNumber
+}
+
+export interface DeserialzedNFTPoolUserData {
+  balance: BigNumber
+  earning: BigNumber
+  nextHarvestUntil: number
+}
+
+
+export interface SerializedNFTState {
+  userDataLoaded: boolean
+  loadArchivedData: boolean
+  
+  spyBalance?: SerializedBigNumber
+  castNFTAllowance?: SerializedBigNumber
+
+  poolPublicData?: SerialzedNFTPoolPublicData
+  poolUserData?: SerialzedNFTPoolUserData
+
+  nftBalance: SerializedNFTGego[]
+
+  factoryAllowance?: boolean
+  rewardAllowance?: boolean
+}
+
+export interface DeserializedNFTState {
+  userDataLoaded: boolean
+  loadArchivedData: boolean
+  
+  spyBalance?: BigNumber
+  castNFTAllowance?: BigNumber
+
+  poolPublicData?: DeserialzedNFTPoolPublicData
+  poolUserData?: DeserialzedNFTPoolUserData
+
+  nftBalance: DeserializedNFTGego[]
+  factoryAllowance?: boolean
+  rewardAllowance?: boolean
+}
+
+export interface SerializedNFTGego {
+  staked: boolean
+  id: string
+  grade: number
+  lockedDays: number
+  blockNum: SerializedBigNumber
+  createdTime: number
+  quality: number
+  amount: SerializedBigNumber
+  efficiency?: SerializedBigNumber
+}
+
+export interface DeserializedNFTGego {
+  staked: boolean
+  id: string
+  grade: number
+  lockedDays: number
+  blockNum: BigNumber
+  createdTime: number
+  quality: number
+  amount: BigNumber
+  efficiency?: BigNumber
+}
+
 export interface SerializedFarmsState {
   data: SerializedFarm[]
   loadArchivedFarmsData: boolean
@@ -582,6 +672,7 @@ export interface State {
   block: BlockState
   farms: SerializedFarmsState
   pools: PoolsState
+  nft: SerializedNFTState
   predictions: PredictionsState
   profile: ProfileState
   teams: TeamsState

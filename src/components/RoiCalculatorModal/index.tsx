@@ -33,6 +33,7 @@ interface RoiCalculatorModalProps {
   stakingTokenBalance: BigNumber
   stakingTokenSymbol: string
   stakingTokenPrice: number
+  stakingTokenDecimal?: number
   earningTokenSymbol?: string
   multiplier?: string
   autoCompoundFrequency?: number
@@ -78,6 +79,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
   stakingTokenBalance,
   stakingTokenSymbol,
   stakingTokenPrice,
+  stakingTokenDecimal = 18,
   multiplier,
   initialValue,
   earningTokenSymbol = 'SPY',
@@ -186,7 +188,7 @@ const RoiCalculatorModal: React.FC<RoiCalculatorModalProps> = ({
               width="128px"
               variant="tertiary"
               onClick={() =>
-                setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
+                setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice), stakingTokenDecimal).toString())
               }
             >
               {t('My Balance').toLocaleUpperCase()}
