@@ -90,7 +90,7 @@ const NFTPoolCard: React.FC<NFTPoolCardProps> = ({account}) => {
         <Flex justifyContent="space-between">
           <Text>{t('Total Power Staked')}:</Text>
           {/* <Text>{t('APR will be reset once the countdown is over')}:</Text> */}
-          <Text bold>{getFullDisplayBalance(poolData.totalSupply, 0)}</Text>
+          <Text bold>{ account && poolUserData ? getFullDisplayBalance(poolUserData.balance, 0) : '-'}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
