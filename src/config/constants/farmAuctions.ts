@@ -3,7 +3,7 @@ import tokens from './tokens'
 import { FarmAuctionBidderConfig } from './types'
 
 const getLpAddress = (tokenAddress: string, quoteToken: Token) => {
-  const token = new Token(parseInt(process.env.REACT_APP_CHAIN_ID, 10), tokenAddress, 18)
+  const token = new Token(ChainId.MAINNET, tokenAddress, 18)
   return Pair.getAddress(token, quoteToken)
 }
 
