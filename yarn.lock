@@ -2577,9 +2577,9 @@
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-"@pancakeswap/uikit@https://gitpkg.now.sh/Smarty-Indonesia/pancake-toolkit/packages/pancake-uikit?4eefb5fb951a469aaeaa1a7ea5a0fa6bf6e8c18f":
+"@pancakeswap/uikit@https://gitpkg.now.sh/Smarty-Indonesia/pancake-toolkit/packages/pancake-uikit?f5f05391e5329510f01fd1244b4f2521e9b67b50":
   version "0.55.0"
-  resolved "https://gitpkg.now.sh/Smarty-Indonesia/pancake-toolkit/packages/pancake-uikit?4eefb5fb951a469aaeaa1a7ea5a0fa6bf6e8c18f#2029ff675780fe027f737bfc57f808225fc18a0c"
+  resolved "https://gitpkg.now.sh/Smarty-Indonesia/pancake-toolkit/packages/pancake-uikit?f5f05391e5329510f01fd1244b4f2521e9b67b50#6ad1408dd98e129d5e202c3e576df61d756e10c3"
   dependencies:
     "@popperjs/core" "^2.9.2"
     "@types/lodash" "^4.14.168"
