@@ -14,6 +14,7 @@ import { SerializedFarmsState, SerializedFarm } from '../types'
 const noAccountFarmConfig = farmsConfig.map((farm) => ({
   ...farm,
   userData: {
+    lockedAmount: '0',
     allowance: '0',
     tokenBalance: '0',
     stakedBalance: '0',
@@ -55,6 +56,7 @@ interface FarmUserDataResponse {
   stakedBalance: string
   earnings: string
   nextHarvestUntil: number
+  lockedAmount: string
 }
 
 export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], { account: string; pids: number[] }>(
@@ -74,6 +76,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<FarmUserDataResponse[], {
         stakedBalance: userInfos[0][index],
         earnings: userFarmEarnings[index],
         nextHarvestUntil: userInfos[1][index],
+        lockedAmount: userInfos[2][index],
       }
     })
   },

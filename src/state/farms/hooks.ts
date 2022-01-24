@@ -13,6 +13,7 @@ import { State, SerializedFarm, DeserializedFarmUserData, DeserializedFarm, Dese
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {
+    lockedAmount: farm.userData ?  new BigNumber(farm.userData.lockedAmount) : BIG_ZERO,
     allowance: farm.userData ? new BigNumber(farm.userData.allowance) : BIG_ZERO,
     tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : BIG_ZERO,
     stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : BIG_ZERO,
@@ -112,8 +113,9 @@ export const useFarmFromLpSymbol = (lpSymbol: string): DeserializedFarm => {
 
 export const useFarmUser = (pid): DeserializedFarmUserData => {
   const { userData } = useFarmFromPid(pid)
-  const { allowance, tokenBalance, stakedBalance, earnings, nextHarvestUntil } = userData
+  const { allowance, tokenBalance, stakedBalance, earnings, nextHarvestUntil, lockedAmount } = userData
   return {
+    lockedAmount,
     allowance,
     tokenBalance,
     stakedBalance,

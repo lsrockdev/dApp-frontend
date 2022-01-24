@@ -30,6 +30,7 @@ interface SerializedFarmUserData {
   stakedBalance: string
   earnings: string
   nextHarvestUntil: number
+  lockedAmount: string
 }
 
 export interface DeserializedFarmUserData {
@@ -38,6 +39,7 @@ export interface DeserializedFarmUserData {
   stakedBalance: BigNumber
   earnings: BigNumber
   nextHarvestUntil: number
+  lockedAmount: BigNumber
 }
 
 export interface SerializedFarm extends SerializedFarmConfig {
