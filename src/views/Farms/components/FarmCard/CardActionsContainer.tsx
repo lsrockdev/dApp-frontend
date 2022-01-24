@@ -34,7 +34,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
   const { toastError } = useToast()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = farm
-  const { allowance, tokenBalance, stakedBalance, earnings } = farm.userData || {}
+  const { allowance, tokenBalance, stakedBalance, earnings, lockedAmount } = farm.userData || {}
   const lpAddress = getAddress(lpAddresses)
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const dispatch = useAppDispatch()
@@ -85,7 +85,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, account, addLiquidi
           {t('Earned')}
         </Text>
       </Flex>
-      <HarvestAction earnings={earnings} pid={pid} nextHarvestUntil={farm.userData.nextHarvestUntil} />
+      <HarvestAction earnings={new BigNumber(earnings).plus(lockedAmount)} pid={pid} nextHarvestUntil={farm.userData.nextHarvestUntil} />
       <Flex>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           {farm.lpSymbol}
