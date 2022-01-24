@@ -101,7 +101,12 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     label: t('NFTs'),
     href: '/nfts',
     icon: 'Nft',
-    items: []
+    items: [
+      {
+        label: t('NFTs'),
+        href: '/nfts',
+      },
+    ],
   },
   // {
   //   label: t('Join Telegram'),
