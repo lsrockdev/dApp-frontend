@@ -21,5 +21,5 @@ export const getFixRate = (grade: number, quality: number) => {
     if( grade === 5){
         return new BigNumber(quality).minus(9800).multipliedBy(20000).dividedBy(180).plus(160000);
     }
-    return new BigNumber(quality).minus(9800).multipliedBy(20000).dividedBy(20).plus(180000);
+    return new BigNumber(quality).minus(9980).multipliedBy(20000).dividedBy(20).plus(180000);
 }
