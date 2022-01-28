@@ -117,7 +117,7 @@ const NFTPoolCard: React.FC<NFTPoolCardProps> = ({account}) => {
           {/* <Text>{t('APR will be reset once the countdown is over')}:</Text> */}
           <Text bold>{rewardsCountdown}</Text>
         </Flex>
-        <CardActionsContainer account={account} earnings={poolUserData.earning}/>
+        <CardActionsContainer account={account} earnings={poolUserData.earning} nextHarvestUntil={poolUserData.nextHarvestUntil}/>
       </CardInnerContainer>
 
       <ExpandingWrapper>
