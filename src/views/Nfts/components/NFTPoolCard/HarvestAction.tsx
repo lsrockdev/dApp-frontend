@@ -46,7 +46,7 @@ const HarvestAction: React.FC<NFTPoolCardActionsProps> = ({ earnings, nextHarves
             await onHarvest()
             toastSuccess(
               `${t('Harvested')}!`,
-              t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' }),
+              t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'SPY' }),
             )
           } catch (e) {
             toastError(
