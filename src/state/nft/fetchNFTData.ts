@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import spyNFTABI from 'config/abi/spyNFT.json'
 import nftFactoryABI from 'config/abi/spyNFTFactory.json'
 import multicall from 'utils/multicall'
-import { getGeneralNFTRewardAddress, getNFTFactoryAddress } from 'utils/addressHelpers'
+import { getOldGeneralNFTRewardAddress, getGeneralNFTRewardAddress, getNFTFactoryAddress } from 'utils/addressHelpers'
 import { getFixRate } from 'utils/nftHelpers'
 import { getSpyNFTContract } from 'utils/contractHelpers'
 import tokens from 'config/constants/tokens'
@@ -47,9 +47,10 @@ export const fetchNFTGegos = async (tokenIds: string[]): Promise<PublicNFTData[]
     return parsedNFTGegos;
 }
 
-export const fetchNFTAllowances = async (account: string): Promise<{factoryAllowance: boolean, rewardAllowance: boolean}> => {
+export const fetchNFTAllowances = async (account: string): Promise<{factoryAllowance: boolean, rewardAllowance: boolean, oldRewardAllowance:boolean}> => {
     const nftAddress = tokens.spynft.address
     const nftFactoryAddress = getNFTFactoryAddress();
+    const oldGeneralNFTRewardAddress = getOldGeneralNFTRewardAddress()
     const generalNFTRewardAddress = getGeneralNFTRewardAddress()
 
     const calls = [
@@ -63,12 +64,18 @@ export const fetchNFTAllowances = async (account: string): Promise<{factoryAllow
           name: 'isApprovedForAll',
           params: [account, generalNFTRewardAddress],
         },
+        {
+          address: nftAddress,
+          name: 'isApprovedForAll',
+          params: [account, oldGeneralNFTRewardAddress],
+        },
     ];
 
-    const [[factoryAllowance], [rewardAllowance]] = await multicall(spyNFTABI, calls)
+    const [[factoryAllowance], [rewardAllowance], [oldRewardAllowance]] = await multicall(spyNFTABI, calls)
 
     return {
         factoryAllowance,
-        rewardAllowance
+        rewardAllowance,
+        oldRewardAllowance
     };
 }

@@ -159,10 +159,14 @@ export interface SerializedNFTState {
   poolPublicData?: SerialzedNFTPoolPublicData
   poolUserData?: SerialzedNFTPoolUserData
 
+  oldPoolPublicData?: SerialzedNFTPoolPublicData
+  oldPoolUserData?: SerialzedNFTPoolUserData
+
   nftBalance: SerializedNFTGego[]
 
   factoryAllowance?: boolean
   rewardAllowance?: boolean
+  oldRewardAllowance?: boolean
 }
 
 export interface DeserializedNFTState {
@@ -172,12 +176,16 @@ export interface DeserializedNFTState {
   spyBalance?: BigNumber
   castNFTAllowance?: BigNumber
 
+  oldPoolPublicData?: DeserialzedNFTPoolPublicData
+  oldPoolUserData?: DeserialzedNFTPoolUserData
+
   poolPublicData?: DeserialzedNFTPoolPublicData
   poolUserData?: DeserialzedNFTPoolUserData
 
   nftBalance: DeserializedNFTGego[]
   factoryAllowance?: boolean
   rewardAllowance?: boolean
+  oldRewardAllowance?: boolean
 }
 
 export interface SerializedNFTGego {

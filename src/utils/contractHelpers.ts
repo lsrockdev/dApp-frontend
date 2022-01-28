@@ -31,6 +31,7 @@ import {
   getPancakeSquadAddress,
   getNFTFactoryAddress,
   getNFTMintroxyAddress,
+  getOldGeneralNFTRewardAddress,
   getGeneralNFTRewardAddress,
 } from 'utils/addressHelpers'
 
@@ -68,6 +69,7 @@ import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollctionAbi from 'config/abi/erc721collection.json'
 import generalNFTReward from 'config/abi/generalNFTReward.json'
+import generalNFTRewardV2Abi from 'config/abi/generalNFTRewardV2.json'
 import spyNFT from 'config/abi/spyNFT.json'
 import spyNFTFactory from 'config/abi/spyNFTFactory.json'
 import spyNFTMintProxy from 'config/abi/spyNFTMintProxy.json'
@@ -128,8 +130,11 @@ export const getMasterchefContract = (signer?: ethers.Signer | ethers.providers.
   return getContract(masterChef, getMasterChefAddress(), signer)
 }
 
+export const getOldSpyNFTRewardContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(generalNFTReward, getOldGeneralNFTRewardAddress(), signer)
+}
 export const getSpyNFTRewardContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(generalNFTReward, getGeneralNFTRewardAddress(), signer)
+  return getContract(generalNFTRewardV2Abi, getGeneralNFTRewardAddress(), signer)
 }
 export const getSpyNFTContract = (tokenAddress: string, signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(spyNFT, tokenAddress, signer)

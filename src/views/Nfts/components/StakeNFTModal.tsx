@@ -9,7 +9,7 @@ import { useTranslation } from 'contexts/Localization'
 import { useAppDispatch } from 'state';
 import { DeserializedNFTGego } from 'state/types'
 import { fetchNFTAllowancesAsync, fetchNFTUserBalanceDataAsync } from 'state/nft';
-import { useNFTRewardAllowance } from 'state/nft/hooks';
+import { useNFTRewardAllowance, useOldNFTRewardAllowance } from 'state/nft/hooks';
 import { BIG_TEN } from 'utils/bigNumber';
 import { useSpyNFT } from 'hooks/useContract';
 import useToast from 'hooks/useToast';
@@ -41,9 +41,10 @@ interface StakeNFTModalProps {
   gego?: DeserializedNFTGego
   gegos?: DeserializedNFTGego[]
   account: string
+  isV2?: boolean
 }
 
-const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ account, gego, gegos, onDismiss }) => {
+const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ account, gego, gegos, isV2 = true, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { toastError, toastSuccess } = useToast()
@@ -54,14 +55,15 @@ const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ acco
   const nftContract = useSpyNFT(tokens.spynft.address)
   const { onApproveGeneralReward: onApprove } = useApproveGeneralReward(nftContract)
   const { onStakeNFT } = useStakeNFT()
+  const oldAllowance = useOldNFTRewardAllowance()
   const allowance = useNFTRewardAllowance()
-  const isApproved = account && allowance;
+  const isApproved = account && ((isV2 && allowance) || (!isV2 && oldAllowance));
 
 
   const handleApprove = useCallback(async() => {
     try {
         setRequestedApproval(true)
-        await onApprove()
+        await onApprove(isV2)
         dispatch(fetchNFTAllowancesAsync({account}))
       } catch (e) {
         toastError(t('Error'), t('Please try again. Confirm the transaction and make sure you are paying enough gas!'))
@@ -69,13 +71,13 @@ const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ acco
       } finally {
         setRequestedApproval(false)
       }
-  }, [onApprove, toastError, t, dispatch, account])
+  }, [onApprove, toastError, t, dispatch, account, isV2])
 
   const handleStakeNFT = useCallback(async() => {
 
     try {
       setPendingTx(true)
-      await onStakeNFT(selectedGego.id)
+      await onStakeNFT(selectedGego.id, isV2)
       dispatch(fetchNFTUserBalanceDataAsync({account}))
       toastSuccess(t('Success'), t('Your NFT #%id% has been staked', {id: selectedGego.id}))
       onDismiss()
@@ -90,7 +92,7 @@ const StakeNFTModal: React.FC<InjectedModalProps & StakeNFTModalProps> = ({ acco
     } finally {
       setPendingTx(false)
     }
-  }, [onStakeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, selectedGego])
+  }, [onStakeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, selectedGego, isV2])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
