@@ -44,9 +44,10 @@ interface UnstakeNFTModalProps {
   gego?: DeserializedNFTGego
   gegos?: DeserializedNFTGego[]
   account: string
+  isV2?: boolean
 }
 
-const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ account, gego, gegos, onDismiss }) => {
+const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ account, gego, gegos, isV2 = true, onDismiss }) => {
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { toastError, toastSuccess } = useToast()
@@ -59,7 +60,7 @@ const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ 
 
     try {
       setPendingTx(true)
-      await onUnstakeNFT(selectedGego.id)
+      await onUnstakeNFT(selectedGego.id, isV2)
       dispatch(fetchNFTUserBalanceDataAsync({account}))
       toastSuccess(t('Success'), t('Your NFT #%id% has been unstaked', {id: selectedGego.id}))
       onDismiss()
@@ -74,7 +75,7 @@ const UnstakeNFTModal: React.FC<InjectedModalProps & UnstakeNFTModalProps> = ({ 
     } finally {
       setPendingTx(false)
     }
-  }, [onUnstakeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, selectedGego])
+  }, [onUnstakeNFT, onDismiss, toastError, toastSuccess, t, dispatch, account, selectedGego, isV2])
 
   return (
     <StyledModalContainer minWidth="320px">

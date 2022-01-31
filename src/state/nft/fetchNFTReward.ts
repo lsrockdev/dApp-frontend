@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import generalNFTRewardABI from 'config/abi/generalNFTReward.json'
-import { getGeneralNFTRewardAddress } from 'utils/addressHelpers'
+import { getOldGeneralNFTRewardAddress, getGeneralNFTRewardAddress } from 'utils/addressHelpers'
 import multicall from 'utils/multicall'
 import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber'
 
@@ -21,8 +21,8 @@ export interface PublicNFTRewardPoolData {
     harvestFee: SerializedBigNumber
 }
 
-export const fetchGeneralNFTRewardPublicData = async (): Promise<PublicNFTRewardPoolData> => {
-    const nftRewardAddress = getGeneralNFTRewardAddress()
+export const fetchGeneralNFTRewardPublicData = async (isV2 = true): Promise<PublicNFTRewardPoolData> => {
+    const nftRewardAddress = isV2 ? getGeneralNFTRewardAddress() : getOldGeneralNFTRewardAddress()
 
     const calls = [
         {
@@ -99,9 +99,9 @@ export const fetchGeneralNFTRewardPublicData = async (): Promise<PublicNFTReward
     }
 }
 
-export const fetchGeneralNFTRewardUserData = async (account: string): Promise<PublicNFTRewardUserData> => {
+export const fetchGeneralNFTRewardUserData = async (account: string, isV2 = true): Promise<PublicNFTRewardUserData> => {
 
-    const nftRewardAddress = getGeneralNFTRewardAddress()
+    const nftRewardAddress = isV2 ? getGeneralNFTRewardAddress() : getOldGeneralNFTRewardAddress()
 
     const calls = [
         {

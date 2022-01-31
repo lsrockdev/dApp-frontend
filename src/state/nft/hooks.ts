@@ -69,8 +69,19 @@ export const useNFTRewardAllowance = () => {
   return useSelector((state: State) => state.nft.rewardAllowance)
 }
 
+export const useOldNFTRewardAllowance = () => {
+  return useSelector((state: State) => state.nft.oldRewardAllowance)
+}
 export const useNFTPoolUserData = () : DeserialzedNFTPoolUserData => {
   const userData = useSelector((state: State) => state.nft.poolUserData)
+  return {
+    balance: userData ? new BigNumber(userData.balance) : BIG_ZERO,
+    earning: userData ? new BigNumber(userData.earning) : BIG_ZERO,
+    nextHarvestUntil: userData ? userData.nextHarvestUntil : 0
+  }
+}
+export const useOldNFTPoolUserData = () : DeserialzedNFTPoolUserData => {
+  const userData = useSelector((state: State) => state.nft.oldPoolUserData)
   return {
     balance: userData ? new BigNumber(userData.balance) : BIG_ZERO,
     earning: userData ? new BigNumber(userData.earning) : BIG_ZERO,
@@ -80,6 +91,20 @@ export const useNFTPoolUserData = () : DeserialzedNFTPoolUserData => {
 
 export const useNFTPoolPublicData = () : DeserialzedNFTPoolPublicData => {
   const publidData = useSelector((state: State) => state.nft.poolPublicData)
+  return {
+    harvestInterval: publidData ? publidData.harvestInterval : 0,
+    periodFinish: publidData ? publidData.periodFinish : 0,
+    rewardPerTokenStored: publidData ? new BigNumber(publidData.rewardPerTokenStored) : BIG_ZERO,
+    rewardRate: publidData ? new BigNumber(publidData.rewardRate) : BIG_ZERO,
+    rewardPrecisionFactor: publidData ? new BigNumber(publidData.rewardPrecisionFactor) : BIG_ZERO,
+    totalSupply: publidData ? new BigNumber(publidData.totalSupply) : BIG_ZERO,
+    totalBalance: publidData ? new BigNumber(publidData.totalBalance) : BIG_ZERO,
+    harvestFee: publidData ? new BigNumber(publidData.harvestFee) : BIG_ZERO
+  }
+}
+
+export const useOldNFTPoolPublicData = () : DeserialzedNFTPoolPublicData => {
+  const publidData = useSelector((state: State) => state.nft.oldPoolPublicData)
   return {
     harvestInterval: publidData ? publidData.harvestInterval : 0,
     periodFinish: publidData ? publidData.periodFinish : 0,

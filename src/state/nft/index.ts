@@ -20,6 +20,7 @@ interface NFTUserDataResponse {
 interface NFTAllowanceDataResponse {
     factoryAllowance: boolean
     rewardAllowance: boolean
+    oldRewardAllowance:boolean
 }
 
 export const fetchNFTUserDataAsync = createAsyncThunk<NFTUserDataResponse, { account: string}>(
@@ -33,19 +34,21 @@ export const fetchNFTUserDataAsync = createAsyncThunk<NFTUserDataResponse, { acc
     },
 )
 
-export const fetchNFTPoolPublicDataAsync = createAsyncThunk<PublicNFTRewardPoolData>(
+export const fetchNFTPoolPublicDataAsync = createAsyncThunk<{old: PublicNFTRewardPoolData, new: PublicNFTRewardPoolData}>(
     'nft/fetchNFTPoolPublicDataAsync',
     async () => {
+        const oldPublicData = await fetchGeneralNFTRewardPublicData(false)
         const publicData = await fetchGeneralNFTRewardPublicData()
-        return publicData
+        return {old: oldPublicData, new: publicData}
     },
 )
 
-export const fetchNFTPoolUserDataAsync = createAsyncThunk<PublicNFTRewardUserData, { account: string}>(
+export const fetchNFTPoolUserDataAsync = createAsyncThunk<{old: PublicNFTRewardUserData, new:PublicNFTRewardUserData}, { account: string}>(
     'nft/fetchNFTPoolUserDataAsync',
     async ({account}) => {
+        const oldUserData = await fetchGeneralNFTRewardUserData(account, false)
         const userData = await fetchGeneralNFTRewardUserData(account)
-        return userData
+        return {old: oldUserData, new: userData}
     },
 )
 
@@ -87,13 +90,21 @@ export const nftSlice = createSlice({
         builder.addCase(fetchNFTPoolPublicDataAsync.fulfilled, (state,action) => {
             state.poolPublicData = {
                 ...state.poolPublicData,
-                ...action.payload
+                ...action.payload.new
+            }
+            state.oldPoolPublicData = {
+                ...state.oldPoolPublicData,
+                ...action.payload.old
             }
         })
         builder.addCase(fetchNFTPoolUserDataAsync.fulfilled, (state,action) => {
             state.poolUserData = {
                 ...state.poolUserData,
-                ...action.payload
+                ...action.payload.new
+            }
+            state.oldPoolUserData = {
+                ...state.oldPoolUserData,
+                ...action.payload.old
             }
         })
         builder.addCase(fetchNFTUserBalanceDataAsync.fulfilled, (state,action) => {
@@ -104,6 +115,7 @@ export const nftSlice = createSlice({
             })
         })
         builder.addCase(fetchNFTAllowancesAsync.fulfilled, (state,action) => {
+            state.oldRewardAllowance = action.payload.oldRewardAllowance
             state.rewardAllowance = action.payload.rewardAllowance
             state.factoryAllowance = action.payload.factoryAllowance
         })

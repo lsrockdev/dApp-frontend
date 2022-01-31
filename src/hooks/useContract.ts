@@ -33,6 +33,7 @@ import {
   getNFTFactoryContract,
   getSpyNFTContract,
   getSpyNFTRewardContract,
+  getOldSpyNFTRewardContract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -108,6 +109,11 @@ export const useMasterchef = () => {
 export const useNFTFactory = () => {
   const { library } = useActiveWeb3React()
   return useMemo(() => getNFTFactoryContract(library.getSigner()), [library])
+}
+
+export const useOldGeneralNFTReward = () => {
+  const { library } = useActiveWeb3React()
+  return useMemo(() => getOldSpyNFTRewardContract(library.getSigner()), [library])
 }
 
 export const useGeneralNFTReward = () => {
