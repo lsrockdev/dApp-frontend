@@ -1,7 +1,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { SerializedNFTState } from 'state/types'
-import { fetchNFTBalance, fetchStakedNFTs } from './fetchNFT'
+import { fetchNFTBalance, fetchOldStakedNFTs, fetchStakedNFTs } from './fetchNFT'
 import { fetchNFTGegos, fetchNFTAllowances, PublicNFTData } from './fetchNFTData'
 import { fetchGeneralNFTRewardUserData, fetchGeneralNFTRewardPublicData, PublicNFTRewardUserData, PublicNFTRewardPoolData } from './fetchNFTReward'
 import { fetchPublicNFTData } from './fetchPublicNFTData'
@@ -10,6 +10,7 @@ const initialState: SerializedNFTState = {
     userDataLoaded: false,
     loadArchivedData: false,
     nftBalance: [],
+    oldNftBalance: [],
 }
 
 interface NFTUserDataResponse {
@@ -52,16 +53,32 @@ export const fetchNFTPoolUserDataAsync = createAsyncThunk<{old: PublicNFTRewardU
     },
 )
 
-export const fetchNFTUserBalanceDataAsync = createAsyncThunk<PublicNFTData[], { account: string}>(
+export const fetchNFTUserBalanceDataAsync = createAsyncThunk<{old: PublicNFTData[], new: PublicNFTData[]}, { account: string}>(
     'nft/fetchNFTuserBalanceDataAsync',
     async ({account}) => {
         const tokenIds = await fetchNFTBalance(account);
         const tokenIdsStaked = await fetchStakedNFTs(account);
-        const tokenGegos = await fetchNFTGegos([...tokenIds.filter((id) => id !== '0'), ...tokenIdsStaked.filter((id) => id !== '0')]);
-        tokenGegos.forEach((gego, index) =>  {
-            tokenGegos[index].staked = tokenIdsStaked.indexOf(gego.id) !== -1
+        const tokenOldIdsStaked = await fetchOldStakedNFTs(account);
+        const tokenGegos = await fetchNFTGegos([...tokenIds.filter((id) => id !== '0'), ...tokenIdsStaked.filter((id) => id !== '0'), ...tokenOldIdsStaked.filter((id) => id !== '0')]);
+        const unstakedGegos = tokenGegos.filter((gego, index) =>  {
+            return tokenIds.indexOf(gego.id) !== -1;
         })
-        return tokenGegos;
+        const stakedGegos = tokenGegos.filter((gego, index) =>  {
+            return tokenIdsStaked.indexOf(gego.id) !== -1;
+        })
+        const oldStakedGegos = tokenGegos.filter((gego, index) =>  {
+            return tokenOldIdsStaked.indexOf(gego.id) !== -1;
+        })
+        unstakedGegos.forEach((gego, index) => {
+            unstakedGegos[index].staked = false;
+        })
+        stakedGegos.forEach((gego, index) => {
+            stakedGegos[index].staked = true;
+        })
+        oldStakedGegos.forEach((gego, index) => {
+            oldStakedGegos[index].staked = true;
+        })
+        return { old: [...unstakedGegos, ...oldStakedGegos], new: [...unstakedGegos, ...stakedGegos]};
     },
 )
 
@@ -108,7 +125,12 @@ export const nftSlice = createSlice({
             }
         })
         builder.addCase(fetchNFTUserBalanceDataAsync.fulfilled, (state,action) => {
-            state.nftBalance = action.payload.map((gego) => {
+            state.nftBalance = action.payload.new.map((gego) => {
+                return {
+                    ...gego
+                }
+            })
+            state.oldNftBalance = action.payload.old.map((gego) => {
                 return {
                     ...gego
                 }

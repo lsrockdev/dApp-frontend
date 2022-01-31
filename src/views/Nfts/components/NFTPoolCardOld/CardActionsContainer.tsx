@@ -6,7 +6,7 @@ import { String } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
 import { useDispatch } from 'react-redux'
-import { useNFTBalances, useOldNFTRewardAllowance, usePollNFTAllowanceData } from 'state/nft/hooks'
+import { useNFTBalances, useOldNFTBalances, useOldNFTRewardAllowance, usePollNFTAllowanceData } from 'state/nft/hooks'
 import { useSpyNFT } from 'hooks/useContract'
 import tokens from 'config/constants/tokens'
 import { fetchNFTAllowancesAsync } from 'state/nft'
@@ -30,7 +30,7 @@ const CardActions: React.FC<NFTCardActionsProps> = ({ account, earnings, nextHar
   const { t } = useTranslation()
   const { toastError } = useToast()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const nftBalances = useNFTBalances()
+  const nftBalances = useOldNFTBalances()
   const allowance = useOldNFTRewardAllowance()
   const isApproved = account && allowance
   const dispatch = useDispatch()
