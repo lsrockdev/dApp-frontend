@@ -56,6 +56,26 @@ export const useNFTBalances = () => {
   return deserlizedNFTBalance
 }
 
+export const useOldNFTBalances = () => {
+  const nftBalance = useSelector((state: State) => state.nft.oldNftBalance)
+
+  const deserlizedNFTBalance = nftBalance.map((gego) => {
+    return {
+      staked: gego.staked,
+      id: gego.id,
+      grade: gego.grade,
+      lockedDays: gego.lockedDays,
+      blockNum: new BigNumber(gego.blockNum),
+      createdTime: gego.createdTime,
+      quality: gego.quality,
+      amount: new BigNumber(gego.amount),
+      efficiency: gego.efficiency ? new BigNumber(gego.efficiency) : BIG_ZERO
+    }
+  })
+
+  return deserlizedNFTBalance
+}
+
 export const useNFTCastAllowance = () =>  {
   const castNFTAllowance = useSelector((state: State) => state.nft.castNFTAllowance)
   return castNFTAllowance ? new BigNumber(castNFTAllowance) : BIG_ZERO

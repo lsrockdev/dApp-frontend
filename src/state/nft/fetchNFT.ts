@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import tokens from 'config/constants/tokens'
-import { getSpyNFTContract, getSpyNFTRewardContract } from 'utils/contractHelpers';
+import { getOldSpyNFTRewardContract, getSpyNFTContract, getSpyNFTRewardContract } from 'utils/contractHelpers';
 
 export const fetchNFTBalance = async (account: string): Promise<SerializedBigNumber[]> => {
 
@@ -10,6 +10,12 @@ export const fetchNFTBalance = async (account: string): Promise<SerializedBigNum
 
     const tokenIds = await nftContract.tokensOfOwner(account)
 
+    return tokenIds.map((tokenId) => new BigNumber(tokenId._hex).toJSON())
+}
+
+export const fetchOldStakedNFTs = async (account: string): Promise<SerializedBigNumber[]> => {
+    const contract = getOldSpyNFTRewardContract();
+    const tokenIds = await contract.getPlayerIds(account)
     return tokenIds.map((tokenId) => new BigNumber(tokenId._hex).toJSON())
 }
 

@@ -163,6 +163,7 @@ export interface SerializedNFTState {
   oldPoolUserData?: SerialzedNFTPoolUserData
 
   nftBalance: SerializedNFTGego[]
+  oldNftBalance: SerializedNFTGego[]
 
   factoryAllowance?: boolean
   rewardAllowance?: boolean
@@ -183,6 +184,7 @@ export interface DeserializedNFTState {
   poolUserData?: DeserialzedNFTPoolUserData
 
   nftBalance: DeserializedNFTGego[]
+  oldNftBalance: DeserializedNFTGego[]
   factoryAllowance?: boolean
   rewardAllowance?: boolean
   oldRewardAllowance?: boolean
