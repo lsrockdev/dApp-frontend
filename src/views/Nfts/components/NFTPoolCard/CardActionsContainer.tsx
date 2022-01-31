@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Text, useModal } from '@pancakeswap/uikit'
+import { Button, Flex, HelpIcon, Text, useModal, useTooltip } from '@pancakeswap/uikit'
 import { String } from 'lodash'
 import { useTranslation } from 'contexts/Localization'
 import useToast from 'hooks/useToast'
@@ -37,6 +37,22 @@ const CardActions: React.FC<NFTCardActionsProps> = ({ account, earnings, nextHar
 
   const stakedBalances = nftBalances.filter((nft) => nft.staked)
   const unstakedBalances = nftBalances.filter((nft) => !nft.staked)
+
+  const {
+    targetRef: harvestRef,
+    tooltip: harvestTooltip,
+    tooltipVisible: harvestTooltipVisible,
+  } = useTooltip(
+    <>
+      <Text>
+        {t(
+          'Harvest button is enabled only when your earnings is over 20 SPY',
+        )}
+      </Text>
+    </>,
+    { placement: 'top-end', tooltipOffset: [20, 10] },
+  )
+
 
   
   const nftContract = useSpyNFT(tokens.spynft.address)
@@ -86,10 +102,16 @@ const CardActions: React.FC<NFTCardActionsProps> = ({ account, earnings, nextHar
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           SPY
         </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" mr="8px">
           {t('Earned')}
         </Text>
+
+        <span 
+        ref={harvestRef}>
+          <HelpIcon color="textSubtle" width="16px" height="16px" />
+        </span>
       </Flex>
+      { harvestTooltipVisible && harvestTooltip }
       <HarvestAction earnings={earnings} nextHarvestUntil={nextHarvestUntil} />
       {!account ? <ConnectWalletButton mt="8px" width="100%" /> : renderApprovalOrStakeButton()}
     </Action>
