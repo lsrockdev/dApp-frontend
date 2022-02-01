@@ -18,6 +18,7 @@ import isArchivedPid from 'utils/farmHelpers'
 import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode, useUserReferrer } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
+import { usePollNFTPublicData } from 'state/nft/hooks'
 import PageHeader from 'components/PageHeader'
 import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
@@ -133,6 +134,7 @@ const Farms: React.FC = () => {
   const isActive = !isInactive && !isArchived
 
   usePollFarmsWithUserData(isArchived)
+  usePollNFTPublicData()
 
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded
