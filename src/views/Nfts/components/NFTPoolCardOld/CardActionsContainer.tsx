@@ -69,7 +69,7 @@ const CardActions: React.FC<NFTCardActionsProps> = ({ account, earnings, nextHar
         <Button disabled={!stakedBalances || stakedBalances.length === 0} variant="secondary" mr="4px" width="100%" onClick={onPresentUnstkeModal}>
           {t('Unstake')}
         </Button>
-        <Button disabled={!unstakedBalances || unstakedBalances.length === 0} variant="primary" ml="4px" width="100%" onClick={onPresentStakeNFTModal}>
+        <Button disabled variant="primary" ml="4px" width="100%" onClick={onPresentStakeNFTModal}>
           {t('Stake')}
         </Button>
       </Flex>
