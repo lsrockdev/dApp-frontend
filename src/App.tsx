@@ -40,6 +40,7 @@ const Home = lazy(() => import('./views/Farms'))
 const Referral = lazy(() => import('./views/Referral'))
 const Farms = lazy(() => import('./views/Farms'))
 const Nfts = lazy(() => import('./views/Nfts'))
+const NftMarketplace = lazy(() => import('./views/NftMarketplace'))
 const FarmAuction = lazy(() => import('./views/FarmAuction'))
 const Lottery = lazy(() => import('./views/Lottery'))
 const Ifos = lazy(() => import('./views/Ifos'))
@@ -147,6 +148,9 @@ const App: React.FC = () => {
               {/* NFT */}
               <Route path="/nfts">
                 <Nfts />
+              </Route>
+              <Route path="/nft-marketplace">
+                <NftMarketplace />
               </Route>
 
               <Route path="/pancake-squad">
