@@ -12,6 +12,7 @@ import { BIG_TEN } from 'utils/bigNumber';
 import useToast from 'hooks/useToast';
 import { useSpyNFT } from 'hooks/useContract';
 import useInterval from 'hooks/useInterval';
+import SellNFTModal from 'views/NftMarketplace/components/SellNFTModal/SellNFTModal';
 import useApproveNFTFactory from '../../hooks/useApproveNFTFactory';
 import StakeNFTModal from '../StakeNFTModal';
 import UnstakeNFTModal from '../UnstakeNFTModal';
@@ -104,9 +105,9 @@ const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, general
     <DecomposeNFTModal gego={gego} account={account} />
   )
 
-  const handleSell = useCallback(async() => {
-    toastInfo(t('Marketplace'), t('Coming soon in marketplace'))
-  }, [toastInfo, t])
+  const [onPresentSellNFTModal] = useModal(
+    <SellNFTModal gego={gego} account={account} />
+  )
 
   const handleApproveNFTFactory = useCallback(async() => {
     try {
@@ -181,7 +182,7 @@ const NFTCard: React.FC<NFTCardProps> = ({account, gego, factoryAllowed, general
               {t('Unstake')}
             </Button>
           )}
-          <Button scale="sm" ml="8px" width="100%" onClick={handleSell}>
+          <Button scale="sm" ml="8px" width="100%" disabled={gego.staked} onClick={onPresentSellNFTModal}>
             {t('Sell')}
           </Button>
         </Flex>

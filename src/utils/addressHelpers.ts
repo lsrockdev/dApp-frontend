@@ -88,3 +88,6 @@ export const getOldGeneralNFTRewardAddress = () => {
 export const getGeneralNFTRewardAddress = () => {
   return getAddress(addresses.generalNFTRewardV2)
 }
+export const getNFTMarketplaceAddress = () => {
+  return getAddress(addresses.nftMarketplace)
+}

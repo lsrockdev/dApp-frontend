@@ -22,6 +22,7 @@ interface NFTAllowanceDataResponse {
     factoryAllowance: boolean
     rewardAllowance: boolean
     oldRewardAllowance:boolean
+    marketplaceAllowance: boolean
 }
 
 export const fetchNFTUserDataAsync = createAsyncThunk<NFTUserDataResponse, { account: string}>(
@@ -140,6 +141,7 @@ export const nftSlice = createSlice({
             state.oldRewardAllowance = action.payload.oldRewardAllowance
             state.rewardAllowance = action.payload.rewardAllowance
             state.factoryAllowance = action.payload.factoryAllowance
+            state.marketplaceAllowance = action.payload.marketplaceAllowance
         })
     }
 })

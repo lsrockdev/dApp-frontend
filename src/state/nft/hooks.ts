@@ -89,6 +89,10 @@ export const useNFTRewardAllowance = () => {
   return useSelector((state: State) => state.nft.rewardAllowance)
 }
 
+export const useNFTMarketplaceAllowance = () => {
+  return useSelector((state: State) => state.nft.marketplaceAllowance)
+}
+
 export const useOldNFTRewardAllowance = () => {
   return useSelector((state: State) => state.nft.oldRewardAllowance)
 }
