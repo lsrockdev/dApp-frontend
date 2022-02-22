@@ -33,6 +33,7 @@ import {
   getNFTMintroxyAddress,
   getOldGeneralNFTRewardAddress,
   getGeneralNFTRewardAddress,
+  getNFTMarketplaceAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -73,6 +74,7 @@ import generalNFTRewardV2Abi from 'config/abi/generalNFTRewardV2.json'
 import spyNFT from 'config/abi/spyNFT.json'
 import spyNFTFactory from 'config/abi/spyNFTFactory.json'
 import spyNFTMintProxy from 'config/abi/spyNFTMintProxy.json'
+import spyNFTMarketplace from 'config/abi/spyNFTMarketplace.json'
 import { ChainLinkOracleContract, FarmAuctionContract, PancakeProfileContract, PredictionsContract } from './types'
 
 const getContract = (abi: any, address: string, signer?: ethers.Signer | ethers.providers.Provider) => {
@@ -130,6 +132,9 @@ export const getMasterchefContract = (signer?: ethers.Signer | ethers.providers.
   return getContract(masterChef, getMasterChefAddress(), signer)
 }
 
+export const getNFTMarketplaceContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
+  return getContract(spyNFTMarketplace, getNFTMarketplaceAddress(), signer)
+}
 export const getOldSpyNFTRewardContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(generalNFTReward, getOldGeneralNFTRewardAddress(), signer)
 }

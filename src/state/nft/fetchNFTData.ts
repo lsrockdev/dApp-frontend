@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import spyNFTABI from 'config/abi/spyNFT.json'
 import nftFactoryABI from 'config/abi/spyNFTFactory.json'
 import multicall from 'utils/multicall'
-import { getOldGeneralNFTRewardAddress, getGeneralNFTRewardAddress, getNFTFactoryAddress } from 'utils/addressHelpers'
+import { getOldGeneralNFTRewardAddress, getGeneralNFTRewardAddress, getNFTFactoryAddress, getNFTMarketplaceAddress } from 'utils/addressHelpers'
 import { getFixRate } from 'utils/nftHelpers'
 import { getSpyNFTContract } from 'utils/contractHelpers'
 import tokens from 'config/constants/tokens'
@@ -47,8 +47,9 @@ export const fetchNFTGegos = async (tokenIds: string[]): Promise<PublicNFTData[]
     return parsedNFTGegos;
 }
 
-export const fetchNFTAllowances = async (account: string): Promise<{factoryAllowance: boolean, rewardAllowance: boolean, oldRewardAllowance:boolean}> => {
+export const fetchNFTAllowances = async (account: string): Promise<{factoryAllowance: boolean, rewardAllowance: boolean, oldRewardAllowance:boolean, marketplaceAllowance: boolean}> => {
     const nftAddress = tokens.spynft.address
+    const nftMarketplaceAddress = getNFTMarketplaceAddress();
     const nftFactoryAddress = getNFTFactoryAddress();
     const oldGeneralNFTRewardAddress = getOldGeneralNFTRewardAddress()
     const generalNFTRewardAddress = getGeneralNFTRewardAddress()
@@ -69,13 +70,19 @@ export const fetchNFTAllowances = async (account: string): Promise<{factoryAllow
           name: 'isApprovedForAll',
           params: [account, oldGeneralNFTRewardAddress],
         },
+        {
+          address: nftAddress,
+          name: 'isApprovedForAll',
+          params: [account, nftMarketplaceAddress],
+        },
     ];
 
-    const [[factoryAllowance], [rewardAllowance], [oldRewardAllowance]] = await multicall(spyNFTABI, calls)
+    const [[factoryAllowance], [rewardAllowance], [oldRewardAllowance], [marketplaceAllowance]] = await multicall(spyNFTABI, calls)
 
     return {
         factoryAllowance,
         rewardAllowance,
-        oldRewardAllowance
+        oldRewardAllowance,
+        marketplaceAllowance
     };
 }
