@@ -21,6 +21,7 @@ import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 import nftMarketReducer from './nftMarket/reducer'
 import nftReducer from './nft'
+import nftmarketplace from './nftMarketplace/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
@@ -39,7 +40,7 @@ const store = configureStore({
     lottery: lotteryReducer,
     info: infoReducer,
     nftMarket: nftMarketReducer,
-
+    nftmarketplace,
     // Exchange
     user,
     transactions,

@@ -37,6 +37,26 @@ const farms: SerializedFarmConfig[] = [
     token: serializedTokens.busd,
     quoteToken: serializedTokens.wbnb,
   },
+  {
+    pid: 4,
+    lpSymbol: 'SPY-USDT LP',
+    lpAddresses: {
+      97: '0x1aec329c825fA6dE8be4f0CB5410C0D4650dACE9',
+      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+    },
+    token: serializedTokens.spy,
+    quoteToken: serializedTokens.usdt,
+  },
+  {
+    pid: null,
+    lpSymbol: 'USDT-BNB LP',
+    lpAddresses: {
+      97: '0x6255381c390d833114ba5121df4D8Ac1Ce8B868A',
+      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+    },
+    token: serializedTokens.usdt,
+    quoteToken: serializedTokens.wbnb,
+  },
 
 ]
 

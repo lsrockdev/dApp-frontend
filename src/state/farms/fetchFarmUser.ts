@@ -44,7 +44,7 @@ export const fetchFarmUserInfos = async (account: string, farmsToFetch: Serializ
     return {
       address: masterChefAddress,
       name: 'userInfo',
-      params: [farm.pid, account],
+      params: [farm.pid || farm.pid === 0 ? farm.pid : 2, account],
     }
   })
 
@@ -68,7 +68,7 @@ export const fetchFarmUserEarnings = async (account: string, farmsToFetch: Seria
     return {
       address: masterChefAddress,
       name: 'pendingSpy',
-      params: [farm.pid, account],
+      params: [farm.pid || farm.pid === 0 ? farm.pid : 2, account],
     }
   })
 

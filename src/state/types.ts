@@ -167,6 +167,7 @@ export interface SerializedNFTState {
 
   factoryAllowance?: boolean
   rewardAllowance?: boolean
+  marketplaceAllowance?: boolean
   oldRewardAllowance?: boolean
 }
 
@@ -187,6 +188,7 @@ export interface DeserializedNFTState {
   oldNftBalance: DeserializedNFTGego[]
   factoryAllowance?: boolean
   rewardAllowance?: boolean
+  marketplaceAllowance?: boolean
   oldRewardAllowance?: boolean
 }
 
@@ -207,7 +209,7 @@ export interface DeserializedNFTGego {
   id: string
   grade: number
   lockedDays: number
-  blockNum: BigNumber
+  blockNum?: BigNumber
   createdTime: number
   quality: number
   amount: BigNumber
@@ -691,4 +693,13 @@ export interface State {
   voting: VotingState
   lottery: LotteryState
   nftMarket: NftMarketState
+}
+
+
+export enum NFTMarketPlaceSearchFilter {
+    SMART,
+    END_TIME,
+    LATEST_RELEASE,
+    LOWEST_PRICE,
+    HIGHEST_PRICE
 }
