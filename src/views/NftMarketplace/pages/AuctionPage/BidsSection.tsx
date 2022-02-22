@@ -6,11 +6,12 @@ import { AddressZero } from '@ethersproject/constants'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
 import { useToken } from 'hooks/Tokens'
-import { NFTAuction, NFTAuctionBid, NFTAuctionData } from 'views/NftMarketplace/types'
-import { getAuctionBids } from 'views/NftMarketplace/hooks/getAuctionBids'
+import useRefresh from 'hooks/useRefresh'
 import truncateHash from 'utils/truncateHash'
 import { getBscScanLink } from 'utils'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getAuctionBids } from '../../hooks/getAuctionBids'
+import { NFTAuction, NFTAuctionBid, NFTAuctionData } from '../../types'
 
 const Wrapper = styled.div`
     flex: 1 1 100%;
@@ -27,17 +28,17 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 2fr 2fr repeat(4, 1fr);
+  grid-template-columns: 2fr 2fr 2fr repeat(3, 1fr);
 
   @media screen and (max-width: 900px) {
-    grid-template-columns: 2fr 2fr repeat(3, 1fr);
+    grid-template-columns: 2fr 2fr 2fr repeat(2, 1fr);
     & :nth-child(4) {
       display: none;
     }
   }
 
   @media screen and (max-width: 800px) {
-    grid-template-columns: 2fr 2fr repeat(2, 1fr);
+    grid-template-columns: 2fr 2fr 2fr 1fr;
     & :nth-child(6) {
       display: none;
     }
@@ -69,6 +70,7 @@ export const TableWrapper = styled(Flex)`
 export const Break = styled.div`
   height: 1px;
   width: 100%;
+  background-color: ${({ theme }) => theme.colors.cardBorder};
 `
 
 const TableLoader: React.FC = () => {
@@ -121,17 +123,17 @@ const DataRow: React.FC<{
     const statusText = useMemo(() => {
         if (auction.lastBidder === AddressZero)
             return 'Out'
-        
-        if (auction.lastBidder?.toLowerCase() === bid.bidder) {
-            if (auction.startedAt + auction.duration < new Date().getTime() / 1000) {
-                return 'In'
-            }
 
-            return '-'
+        const auctionPrice = getFullDisplayBalance(auction.lastPrice, payToken ? payToken.decimals: 18 )
+        if (auction.lastBidder?.toLowerCase() === bid.bidder && auctionPrice && bid.price === parseFloat(auctionPrice)) {
+            if (auction.startedAt + auction.duration > new Date().getTime() / 1000) {
+                return '-'
+            }
+            return 'In'
         }
 
         return 'Out'
-    }, [bid, auction])
+    }, [bid, auction, payToken])
     return (
         <ResponsiveGrid>
             <Flex alignItems="center">
@@ -161,10 +163,11 @@ interface BidsSectionProps {
     account?: string
 }
 
-const BidsSection: React.FC<BidsSectionProps> = ({auction, account}) => {
+const BidsSection: React.FC<BidsSectionProps> = ({auction}) => {
 
     const { t } = useTranslation()
 
+    const { slowRefresh } = useRefresh()
     const [loaded, setLoaded] = useState(false)
     const useEth = auction.payToken === AddressZero
     const payToken = useToken(useEth ? null : auction.payToken)
@@ -180,10 +183,8 @@ const BidsSection: React.FC<BidsSectionProps> = ({auction, account}) => {
             }
         }
 
-        if (!loaded && auction && auction.id) {
-            loadBids()
-        }
-    }, [loaded, auction])
+        loadBids()
+    }, [auction, slowRefresh])
 
     return (
         <Wrapper>
@@ -246,11 +247,13 @@ const BidsSection: React.FC<BidsSectionProps> = ({auction, account}) => {
                     { loaded ? (
                         <>
                         {
-                            bids && bids.length > 0 ? bids.map((bid) => {
+                            bids && bids.length > 0 ? bids.map((bid, index) => {
                                 return (
                                 <React.Fragment key={bid.id}>
-                                    <DataRow bid={bid} useEth={useEth} payToken={payToken} auction={auction}/>
+                                    {index > 0 && (
                                     <Break />
+                                    )}
+                                    <DataRow bid={bid} useEth={useEth} payToken={payToken} auction={auction}/>
                                 </React.Fragment>
                                 )
                             }) : (

@@ -24,7 +24,7 @@ interface AuctionFields {
     auctionId: string
     creationTime: string
     endAt: string
-    staringPrice: string
+    startingPrice: string
     lastPrice: string
     status: number
     gego: GegoFields
@@ -69,13 +69,15 @@ function convertAuctionGegoResponse(gego: GegoFields) : DeserializedNFTGego{
 }
 
 function convertAuctionResponse(auction: AuctionFields) : NFTAuction {
-    const {id, auctionId, payToken, creationTime, endAt, staringPrice, lastPrice, status, gego} = auction
+    const {id, auctionId, payToken, creationTime, endAt, startingPrice: startingPrice_, lastPrice, status, gego, seller, lastBidder} = auction
     return {
         id,
         auctionId,
         creationTime: parseInt(creationTime),
         endAt: parseInt(endAt),
-        startingPrice: parseFloat(staringPrice),
+        seller,
+        lastBidder,
+        startingPrice: parseFloat(startingPrice_),
         lastPrice: lastPrice ? parseFloat(lastPrice) : undefined,
         payToken : payToken ? (payToken.id === tokens.spy.address ? tokens.spy : new Token(parseInt(process.env.REACT_APP_CHAIN_ID, 10), payToken.id, parseInt(payToken.decimals), payToken.symbol, payToken.decimals)) : null,
         status,
@@ -116,7 +118,7 @@ export const getAuctionBids = async(auctionId: string) : Promise<NFTAuctionBid[]
     const contractAddress = getNFTMarketplaceAddress()
     const query = `
         query get_bids {
-            bids: auctionBids(first:30, orderBy: creationTime, orderDirection: desc, where:{auction_in:["${contractAddress.toLowerCase()}-${auctionId}"]}) {
+            bids: auctionBids(first:30, orderBy: creationTime, orderDirection: desc, where:{auction:"${contractAddress.toLowerCase()}-${auctionId}"}) {
                 id
                 auctionId
                 creationTime
@@ -163,7 +165,7 @@ export const getMyBids = async(address: string) : Promise<NFTAuctionBid[]> => {
                     auctionId
                     creationTime
                     endAt
-                    staringPrice
+                    startingPrice
                     lastPrice
                     status
                     payToken {

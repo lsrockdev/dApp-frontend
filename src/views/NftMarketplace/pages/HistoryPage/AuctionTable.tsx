@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { AddressZero } from '@ethersproject/constants'
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, useMatchBreakpoints, Button, LinkExternal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import { getBscScanLink } from 'utils'
+import truncateHash from 'utils/truncateHash'
 import { NFTAuction, NFTAuctionStatus } from '../../types'
 
 const ResponsiveGrid = styled.div`
@@ -13,18 +15,21 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 20px repeat(5, 1fr);
+  grid-template-columns: 20px repeat(6, 1fr);
 
   @media screen and (max-width: 900px) {
     grid-template-columns: 20px repeat(4, 1fr);
     & :nth-child(4) {
       display: none;
     }
+    & :nth-child(5) {
+      display: none;
+    }
   }
 
   @media screen and (max-width: 800px) {
-    grid-template-columns: 20px repeat(3, 1fr);
-    & :nth-child(6) {
+    grid-template-columns: 20px repeat(4, 1fr);
+    & :nth-child(4) {
       display: none;
     }
   }
@@ -34,7 +39,10 @@ const ResponsiveGrid = styled.div`
     > *:first-child {
       display: none;
     }
-    > *:nth-child(3) {
+    & :nth-child(3) {
+      display: none;
+    }
+    & :nth-child(6) {
       display: none;
     }
   }
@@ -48,7 +56,6 @@ export const TableWrapper = styled(Flex)`
   padding-top: 16px;
   flex-direction: column;
   gap: 16px;
-  background-color: ${({ theme }) => theme.card.background};
   border-radius: ${({ theme }) => theme.radii.card};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
@@ -57,6 +64,14 @@ export const Break = styled.div`
   height: 1px;
   background-color: ${({ theme }) => theme.colors.cardBorder};
   width: 100%;
+`
+
+const LinkWrapper = styled(Link)`
+  text-decoration: none;
+  :hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
 `
 
 const TableLoader: React.FC = () => {
@@ -68,10 +83,12 @@ const TableLoader: React.FC = () => {
             <Skeleton/>
             <Skeleton/>
             <Skeleton/>
+            <Skeleton/>
         </ResponsiveGrid>
     )
     return (
       <>
+        {loadingRow}
         {loadingRow}
         {loadingRow}
         {loadingRow}
@@ -141,28 +158,32 @@ const DataRow: React.FC<{
         return res
     }, [status, t])
     return (
-        <ResponsiveGrid>
-            <Flex>
-                <Text>{index + 1}</Text>
-            </Flex>
-            <Flex alignItems="center">
-                <Text>#{auction.gego.id}</Text>
-            </Flex>
-            <Text>
-                {auction.startingPrice} {symbol}
-            </Text>
-            <Text>
-                {auction.lastPrice} {symbol}
-            </Text>
-            <Text>
-                {statusText}
-            </Text>
-            <Flex alignItems="center" flexWrap="wrap">
-                <Button scale="sm" as={Link} to={`/nft-marketplace/auction/${auction.auctionId}`}>
-                    {t('Details')}
-                </Button>
-            </Flex>
-        </ResponsiveGrid>
+
+        <LinkWrapper to={`/nft-marketplace/auction/${auction.auctionId}`}>
+            <ResponsiveGrid>
+                <Flex>
+                    <Text>{index + 1}</Text>
+                </Flex>
+                <Flex alignItems="center">
+                    <Text>#{auction.gego.id}</Text>
+                </Flex>
+                <Flex alignItems="center">
+                    <Text>{auction.seller ? truncateHash(auction.seller) : '-'}</Text>
+                </Flex>
+                <Flex alignItems="center">
+                    <Text>{auction.lastBidder ? truncateHash(auction.lastBidder) : '-'}</Text>
+                </Flex>
+                <Text>
+                    {auction.startingPrice} {symbol}
+                </Text>
+                <Text>
+                    {auction.lastPrice} {symbol}
+                </Text>
+                <Text>
+                    {statusText}
+                </Text>
+            </ResponsiveGrid>
+        </LinkWrapper>
     )
   }
 
@@ -173,7 +194,8 @@ const SORT_FIELD = {
 const MAX_ITEMS = 10
 const AuctionTable:React.FC<{
     auctions: NFTAuction[]
-}> = ({auctions}) => {
+    loading: boolean
+}> = ({auctions, loading}) => {
 
     const { t } = useTranslation()
     const [page, setPage] = useState(1)
@@ -199,6 +221,22 @@ const AuctionTable:React.FC<{
                     bold
                     textTransform="uppercase"
                 >
+                    {t('Seller')}
+                </ClickableColumnHeader>
+                <ClickableColumnHeader
+                    color="secondary"
+                    fontSize="12px"
+                    bold
+                    textTransform="uppercase"
+                >
+                    {t('Last Bidder')}
+                </ClickableColumnHeader>
+                <ClickableColumnHeader
+                    color="secondary"
+                    fontSize="12px"
+                    bold
+                    textTransform="uppercase"
+                >
                     {t('Start Price')}
                 </ClickableColumnHeader>
                 <ClickableColumnHeader
@@ -217,23 +255,24 @@ const AuctionTable:React.FC<{
                 >
                     {t('Status')}
                 </ClickableColumnHeader>
-                <ClickableColumnHeader
-                    color="secondary"
-                    fontSize="12px"
-                    bold
-                    textTransform="uppercase"
-                >
-                    {t('Action')}
-                </ClickableColumnHeader>
             </ResponsiveGrid>
             <Break />
-            { auctions.length > 0 ? (
+            { loading ? (
+                <>
+                <TableLoader />
+                <Box/>
+                </>
+            )
+            : auctions && auctions.length > 0 ?
+            (
                 <>
                     {auctions.map((auction, i) => {
                         return (
                             <React.Fragment key={auction.id}>
-                              <DataRow index={i} auction={auction} />
-                              <Break />
+                                { i > 0 && (
+                                    <Break />
+                                )}
+                                <DataRow index={i} auction={auction} />
                             </React.Fragment>
                         )
                     })}
@@ -241,7 +280,9 @@ const AuctionTable:React.FC<{
                 </>
             ) : (
                 <>
-                <TableLoader />
+                <Flex justifyContent="center" alignItems="center" height="200px">
+                    <Text>No Records Found</Text>
+                </Flex>
                 <Box/>
                 </>
             )}

@@ -131,11 +131,11 @@ const AuctionSection: React.FC<AuctionSectionProps> = ({auction, account, reload
     }, [useEth, payToken, bidAmount])
 
     const isSeller = useMemo(() => {
-        return account && account.toLocaleLowerCase() === auction.seller.toLocaleLowerCase()
+        return account && account.toLowerCase() === auction.seller.toLowerCase()
     }, [auction, account])
 
     const isWinner = useMemo(() => {
-        return account && account.toLocaleLowerCase() === auction.lastBidder.toLocaleLowerCase()
+        return account && auction.lastBidder && account.toLowerCase() === auction.lastBidder.toLowerCase()
     }, [auction, account])
 
     const status = useMemo(() => {
@@ -266,15 +266,17 @@ const AuctionSection: React.FC<AuctionSectionProps> = ({auction, account, reload
 
     const renderApprovalOrBidButton = () => {
         if (status === NFTAuctionStatus.DEALED && (isSeller || isWinner)) {
-            <Button
-                scale="md" variant="primary" width="100%"
-                disabled={isSeller || pendingTx}
-                onClick={handleClaim}
-            >
-                {pendingTx ? (
-                <Dots>{t('Processing')}</Dots>
-                ) : t('Claim Now')}
-            </Button>
+            return (
+                <Button
+                    scale="md" variant="primary" width="100%"
+                    disabled={pendingTx}
+                    onClick={handleClaim}
+                >
+                    {pendingTx ? (
+                    <Dots>{t('Processing')}</Dots>
+                    ) : t('Claim Now')}
+                </Button>
+            )
         }
       return useEth || approval === ApprovalState.APPROVED ? (
         <Button
@@ -322,11 +324,13 @@ const AuctionSection: React.FC<AuctionSectionProps> = ({auction, account, reload
                         {bidAmountText}
                     </Text>
 
-                    <Flex flexDirection="column" mt="12px">
-                        { account ? renderApprovalOrBidButton() : (
-                            <ConnectWalletButton disabled={isSeller}/>
-                        )}
-                    </Flex>
+                    { (status === NFTAuctionStatus.RUNNING || status === NFTAuctionStatus.DEALED) && (
+                        <Flex flexDirection="column" mt="12px">
+                            { account ? renderApprovalOrBidButton() : (
+                                <ConnectWalletButton disabled={isSeller}/>
+                            )}
+                        </Flex>
+                    )}
                     
                 </RightSection>
             </Group>

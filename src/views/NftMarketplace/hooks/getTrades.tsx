@@ -24,6 +24,8 @@ interface MarketFields {
     listingId: string
     creationTime: string
     price: string
+    seller: string
+    purchaser: string
     payToken?: {
         id: string
         symbol: string
@@ -35,6 +37,10 @@ interface MarketFields {
 }
 interface MarketsQueryResponse {
     markets: MarketFields[]
+}
+interface MyMarketsQueryResponse {
+    sells: MarketFields[]
+    purchases: MarketFields[]
 }
 
 function convertMarketGegoResponse(gego: GegoFields) : DeserializedNFTGego{
@@ -52,13 +58,15 @@ function convertMarketGegoResponse(gego: GegoFields) : DeserializedNFTGego{
 }
 
 function convertMarketResponse(auction: MarketFields) : NFTTrade {
-    const {id, listingId, creationTime, price, payToken, status, gego} = auction
+    const {id, listingId, creationTime, price, payToken, status, gego, seller, purchaser} = auction
     return {
         id,
         listingId,
         creationTime: parseInt(creationTime),
         price: parseFloat(price),
         status,
+        seller, 
+        purchaser,
         payToken : auction.payToken ? (auction.payToken.id === tokens.spy.address ? tokens.spy : new Token(parseInt(process.env.REACT_APP_CHAIN_ID, 10), auction.payToken.id, parseInt(auction.payToken.decimals), auction.payToken.symbol, auction.payToken.decimals)) : null,
         gego: convertMarketGegoResponse(gego)
     }
@@ -88,12 +96,14 @@ export const getAllTrades = async(filter: NFTMarketPlaceSearchFilter) : Promise<
     }
     const query = `
         query get_markets {
-            markets: markets(first:30, where:{status:1}. orderBy: ${orderBy}, orderDirection: ${orderDirection}) {
+            markets: markets(first:30, where:{status:1}, orderBy: ${orderBy}, orderDirection: ${orderDirection}) {
                 id
                 tokenId
                 listingId
                 creationTime
                 price
+                seller
+                purchaser
                 payToken {
                     id
                     symbol
@@ -129,12 +139,39 @@ export const getAllTrades = async(filter: NFTMarketPlaceSearchFilter) : Promise<
 export const getMyTrades = async(address:string) : Promise<NFTTrade[]> => {
     const query = `
         query get_markets {
-            markets: markets(first:30, where:{address:"${address.toLowerCase()}"}) {
+            sells: markets(first:30, where:{seller:"${address.toLowerCase()}"}) {
                 id
                 tokenId
                 listingId
                 creationTime
                 price
+                seller
+                purchaser
+                payToken {
+                    id
+                    symbol
+                    name
+                    decimals
+                }
+                status
+                gego {
+                  id
+                  amount
+                  creationTime
+                  grade
+                  lockedDays
+                  quality
+                  tokenId
+                }
+            }
+            purchases: markets(first:30, where:{purchaser:"${address.toLowerCase()}"}) {
+                id
+                tokenId
+                listingId
+                creationTime
+                price
+                seller
+                purchaser
                 payToken {
                     id
                     symbol
@@ -156,10 +193,15 @@ export const getMyTrades = async(address:string) : Promise<NFTTrade[]> => {
     `
 
     try {
-        const data = await request<MarketsQueryResponse>(GRAPH_API_NFTMARKET_MARKETPLACE, query)
-        return data.markets.map((auction) => {
+        const data = await request<MyMarketsQueryResponse>(GRAPH_API_NFTMARKET_MARKETPLACE, query)
+        const sells = data.sells.map((auction) => {
             return convertMarketResponse(auction)
         })
+        const purchases = data.purchases.map((auction) => {
+            return convertMarketResponse(auction)
+        })
+
+        return [...sells, ...purchases]
     } catch (error) {
         console.error('Failed to fetch auction data', error)
         return undefined;

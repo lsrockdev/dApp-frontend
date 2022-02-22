@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization';
 import Select, { OptionProps } from 'components/Select/Select';
 import useToast from 'hooks/useToast';
-import { BIG_ZERO } from 'utils/bigNumber';
+import { BIG_TEN, BIG_ZERO } from 'utils/bigNumber';
 import BaseSection from './BaseSection';
 import { useListNFTAuction, useListNFTMarket } from '../../hooks/useListNFT';
 import SPYInput from './SPYInput';
@@ -54,8 +54,9 @@ const MarketSection: React.FC<MarketSectionProps> = ({ gego, account, onDismiss 
   const [price, setPrice] = useState('')
   
   const priceNumber = useMemo(() => {
-    return price && price.length > 0 ? new BigNumber(price) : BIG_ZERO
-  }, [price])
+    const number = price && price.length > 0 ? new BigNumber(price) : BIG_ZERO
+    return number.multipliedBy(BIG_TEN.pow(useToken ? tokens.spy.decimals : 18))
+  }, [price, useToken])
 
   const { onListMarket } = useListNFTMarket()
 

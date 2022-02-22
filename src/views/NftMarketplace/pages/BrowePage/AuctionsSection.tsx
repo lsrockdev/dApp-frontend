@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
-import { Skeleton } from '@pancakeswap/uikit'
+import { Skeleton, Flex, Text } from '@pancakeswap/uikit'
 import { useNFTMarketplaceSearchFilter, useNFTMarketplaceSearchGrade } from 'state/nftMarketplace/hooks'
+import useRefresh from 'hooks/useRefresh'
 import { getAllAuctions } from '../../hooks/getAuctions'
 import { NFTAuction } from '../../types'
 import AuctionCard from '../../components/AuctionCard/AuctionCard'
@@ -42,6 +43,7 @@ const NFTCards = styled.div`
 
 const AuctionSection: React.FC = () => {
     const { t } = useTranslation()
+    const { slowRefresh } = useRefresh()
     const [isLoading, setIsLoading] = useState(false)
     const [auctions, setAuctions] = useState<NFTAuction[]>([])
     const [searchFilter,] = useNFTMarketplaceSearchFilter()
@@ -60,7 +62,7 @@ const AuctionSection: React.FC = () => {
         }
         
         fetchAuctions()
-    }, [searchFilter])
+    }, [searchFilter, slowRefresh])
 
     const filteredResult = useMemo(() => {
         if (!auctions) {
@@ -75,11 +77,20 @@ const AuctionSection: React.FC = () => {
     }, [auctions, searchGrade])
 
     const renderContent = () => {
-        if (isLoading || !filteredResult) {
+        if (isLoading) {
             return (
                 <Skeleton width="100%" height="300px" animation="waves"/>
             )
         }
+
+        if (!filteredResult || filteredResult.length === 0) {
+            return (
+            <Flex justifyContent="center" alignItems="center" height="200px">
+                <Text>No Records Found</Text>
+            </Flex>
+            )
+        }
+
         return (
             <NFTCards>
                 {filteredResult.map((auction) => {

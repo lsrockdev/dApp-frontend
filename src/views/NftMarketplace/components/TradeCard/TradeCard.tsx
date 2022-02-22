@@ -34,7 +34,7 @@ const TradeCard: React.FC<TradeCardProps> = ({market}) => {
 
   return (
       <AuctionCardWrapper>
-        <LinkWrapper to={`/nft-marketplace/auction/${market.listingId}`}>
+        <LinkWrapper to={`/nft-marketplace/market/${market.listingId}`}>
           <Flex flexDirection="column">
             <NFTCard gego={market.gego}/>
           </Flex>

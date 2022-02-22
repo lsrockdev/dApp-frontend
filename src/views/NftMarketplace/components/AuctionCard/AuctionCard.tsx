@@ -44,7 +44,7 @@ const AuctionCard: React.FC<AuctionCardProps> = ({auction}) => {
                   {t('Latest Price')}:
                 </Text>
                 <Text color="primary">
-                  {auction.lastPrice ? auction.lastPrice : auction.startingPrice} {auction.payToken ? auction.payToken : 'BNB'}
+                  {auction.lastPrice ? auction.lastPrice : auction.startingPrice} {auction.payToken ? auction.payToken.symbol : 'BNB'}
                 </Text>
               </Flex>
           </Flex>

@@ -9,7 +9,7 @@ import BigNumber from 'bignumber.js'
 export const useListNFTMarket = () => {
     const marketplaceContract = useSpyNFTMarketplace()
 
-    const handleListMarket = useCallback(async (useToken: boolean, tokenId: string, price) => {
+    const handleListMarket = useCallback(async (useToken: boolean, tokenId: string, price: string) => {
         const params = [
             tokens.spynft.address,
             tokenId,

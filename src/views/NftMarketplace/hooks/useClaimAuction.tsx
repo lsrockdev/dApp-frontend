@@ -11,7 +11,7 @@ export const useClaimAuction = (auctionId: string) => {
         async() => {
             const gasPrice = getGasPrice()
             
-            const tx = await callWithEstimateGas(marketplaceContract, 'claim', [auctionId], { gasPrice})
+            const tx = await callWithEstimateGas(marketplaceContract, 'collect', [auctionId], { gasPrice})
             const receipt = await tx.wait()
             return receipt
         },

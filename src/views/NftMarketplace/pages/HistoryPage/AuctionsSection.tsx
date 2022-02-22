@@ -68,7 +68,7 @@ const AuctionSection: React.FC = () => {
             )
         }
         return (
-            <AuctionTable auctions={auctions} />
+            <AuctionTable auctions={auctions} loading={isLoading}/>
         )
     }
 

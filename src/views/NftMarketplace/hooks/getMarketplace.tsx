@@ -6,23 +6,27 @@ import { getFixRate } from 'utils/nftHelpers'
 import { DeserializedNFTGego } from 'state/types'
 import { NFTAuction, NFTAuctionData, NFTTradeData } from '../types'
 
-const getGego = async(id: string) : Promise<DeserializedNFTGego> => {
+const getGego = async(id: string) : Promise<DeserializedNFTGego|undefined> => {
     const factoryContract = getNFTFactoryContract()
-    const rawNFTGego = await factoryContract.getGego(id)
-    const quality = new BigNumber(rawNFTGego.quality?._hex).toNumber()
-    const grade = new BigNumber(rawNFTGego.grade?._hex).toNumber()
-    const efficiency = getFixRate(grade, quality)
-    const amount = new BigNumber(rawNFTGego.amount?._hex)
-    return {
-        id,
-        grade,
-        lockedDays: new BigNumber(rawNFTGego.lockedDays?._hex).toNumber(),
-        blockNum: new BigNumber(rawNFTGego.blockNum?._hex),
-        createdTime: new BigNumber(rawNFTGego.createdTime?._hex).toNumber(),
-        quality,
-        amount,
-        efficiency,
-        staked: false
+    try {
+        const rawNFTGego = await factoryContract.getGego(id)
+        const quality = new BigNumber(rawNFTGego.quality?._hex).toNumber()
+        const grade = new BigNumber(rawNFTGego.grade?._hex).toNumber()
+        const efficiency = getFixRate(grade, quality)
+        const amount = new BigNumber(rawNFTGego.amount?._hex)
+        return {
+            id,
+            grade,
+            lockedDays: new BigNumber(rawNFTGego.lockedDays?._hex).toNumber(),
+            blockNum: new BigNumber(rawNFTGego.blockNum?._hex),
+            createdTime: new BigNumber(rawNFTGego.createdTime?._hex).toNumber(),
+            quality,
+            amount,
+            efficiency,
+            staked: false
+        }
+    } catch {
+        return undefined
     }
 }
 

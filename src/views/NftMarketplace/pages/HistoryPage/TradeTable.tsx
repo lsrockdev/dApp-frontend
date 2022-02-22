@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Box, Flex, Skeleton, Text, useMatchBreakpoints, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Skeleton, Text, useMatchBreakpoints, LinkExternal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import truncateHash from 'utils/truncateHash'
+import { getBscScanLink } from 'utils'
 import { useTranslation } from 'contexts/Localization'
 import { NFTTrade } from '../../types'
 
@@ -12,18 +14,14 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 20px repeat(4, 1fr);
+  grid-template-columns: 20px repeat(5, 1fr);
 
   @media screen and (max-width: 900px) {
-    grid-template-columns: 20px repeat(4, 1fr);
-    & :nth-child(4) {
-      display: none;
-    }
   }
 
   @media screen and (max-width: 800px) {
-    grid-template-columns: 20px repeat(3, 1fr);
-    & :nth-child(6) {
+    grid-template-columns: 20px repeat(4, 1fr);
+    > *:nth-child(3) {
       display: none;
     }
   }
@@ -33,7 +31,10 @@ const ResponsiveGrid = styled.div`
     > *:first-child {
       display: none;
     }
-    > *:nth-child(3) {
+    > *:nth-child(4) {
+      display: none;
+    }
+    > *:nth-child(5) {
       display: none;
     }
   }
@@ -47,7 +48,6 @@ export const TableWrapper = styled(Flex)`
   padding-top: 16px;
   flex-direction: column;
   gap: 16px;
-  background-color: ${({ theme }) => theme.card.background};
   border-radius: ${({ theme }) => theme.radii.card};
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
@@ -58,9 +58,18 @@ export const Break = styled.div`
   width: 100%;
 `
 
+const LinkWrapper = styled(Link)`
+  text-decoration: none;
+  :hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
 const TableLoader: React.FC = () => {
     const loadingRow = (
         <ResponsiveGrid>
+            <Skeleton/>
             <Skeleton/>
             <Skeleton/>
             <Skeleton/>
@@ -75,6 +84,7 @@ const TableLoader: React.FC = () => {
         {loadingRow}
         {loadingRow}
         {loadingRow}
+        {loadingRow}
       </>
     )
 }
@@ -82,7 +92,8 @@ const TableLoader: React.FC = () => {
 const DataRow: React.FC<{ 
     trade: NFTTrade
     index: number
-}> = ({ trade, index }) => {
+    account?: string
+}> = ({ trade, index, account }) => {
     const { isXs, isSm } = useMatchBreakpoints()
     const { t } = useTranslation()
     const useEth = !trade.payToken
@@ -97,44 +108,49 @@ const DataRow: React.FC<{
             res = t('Canceled')
             break
         case 1:
-            res = t('Running')
+            res = t('Active')
             break
         case 2:
-            res = t('Finished')
+            res = trade.seller === account.toLowerCase() ? t('Sold') : t('Purchased')
             break
         default: 
-            res = t('Not Running')
+            res = t('Inactive')
             break
         }
 
         return res
-    }, [trade, t])
+    }, [trade, t, account])
     return (
-        <ResponsiveGrid>
-            <Flex>
-                <Text>{index + 1}</Text>
-            </Flex>
-            <Flex alignItems="center">
-                <Text>#{trade.gego.id}</Text>
-            </Flex>
-            <Text>
-                {trade.price} {symbol}
-            </Text>
-            <Text>
-                {statusText}
-            </Text>
-            <Flex alignItems="center" flexWrap="wrap">
-                <Button scale="sm" as={Link} to={`/nft-marketplace/market/${trade.listingId}`}>
-                    {t('Details')}
-                </Button>
-            </Flex>
-        </ResponsiveGrid>
+        <LinkWrapper to={`/nft-marketplace/market/${trade.listingId}`}>
+            <ResponsiveGrid>
+                <Flex>
+                    <Text>{index + 1}</Text>
+                </Flex>
+                <Flex alignItems="center">
+                    <Text>#{trade.gego.id}</Text>
+                </Flex>
+                <Flex alignItems="center">
+                    <Text>{trade.seller ? truncateHash(trade.seller) : '-'}</Text>
+                </Flex>
+                <Flex alignItems="center">
+                    <Text>{trade.purchaser ? truncateHash(trade.purchaser) : '-'}</Text>
+                </Flex>
+                <Text>
+                    {trade.price} {symbol}
+                </Text>
+                <Text>
+                    {statusText}
+                </Text>
+            </ResponsiveGrid>
+        </LinkWrapper>
     )
   }
 
 const TradeTable:React.FC<{
     trades: NFTTrade[]
-}> = ({trades}) => {
+    loading: boolean
+    account?: string
+}> = ({trades, loading, account}) => {
 
     const { t } = useTranslation()
 
@@ -158,7 +174,7 @@ const TradeTable:React.FC<{
                     bold
                     textTransform="uppercase"
                 >
-                    {t('Start Price')}
+                    {t('Seller')}
                 </ClickableColumnHeader>
                 <ClickableColumnHeader
                     color="secondary"
@@ -166,7 +182,15 @@ const TradeTable:React.FC<{
                     bold
                     textTransform="uppercase"
                 >
-                    {t('Lasted Price')}
+                    {t('Purchaser')}
+                </ClickableColumnHeader>
+                <ClickableColumnHeader
+                    color="secondary"
+                    fontSize="12px"
+                    bold
+                    textTransform="uppercase"
+                >
+                    {t('Sale Price')}
                 </ClickableColumnHeader>
                 <ClickableColumnHeader
                     color="secondary"
@@ -176,23 +200,24 @@ const TradeTable:React.FC<{
                 >
                     {t('Status')}
                 </ClickableColumnHeader>
-                <ClickableColumnHeader
-                    color="secondary"
-                    fontSize="12px"
-                    bold
-                    textTransform="uppercase"
-                >
-                    {t('Action')}
-                </ClickableColumnHeader>
             </ResponsiveGrid>
             <Break />
-            { trades.length > 0 ? (
+            { loading ? (
+                <>
+                <TableLoader />
+                <Box/>
+                </>
+            )
+            : trades && trades.length > 0 ?
+            (
                 <>
                     {trades.map((trade, i) => {
                         return (
                             <React.Fragment key={trade.id}>
-                              <DataRow index={i} trade={trade} />
-                              <Break />
+                                { i > 0 && (
+                                    <Break />
+                                )}
+                                <DataRow index={i} trade={trade} account={account}/>
                             </React.Fragment>
                         )
                     })}
@@ -200,7 +225,9 @@ const TradeTable:React.FC<{
                 </>
             ) : (
                 <>
-                <TableLoader />
+                <Flex justifyContent="center" alignItems="center" height="200px">
+                    <Text>No Records Found</Text>
+                </Flex>
                 <Box/>
                 </>
             )}

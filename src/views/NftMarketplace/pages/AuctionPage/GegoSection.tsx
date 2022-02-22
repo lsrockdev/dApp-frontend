@@ -81,7 +81,7 @@ const GegoSection: React.FC<GegoSectionProps> = ({gego, owner, account, showCanc
           const secS = sec < 10 ? `0${sec}`:`${sec}`;
           setCountdown(`${dayS}:${hourS}:${minS}:${secS}`);
         } else {
-          setCountdown('');
+          setCountdown('Now!');
         }
       } else {
         setCountdown('');

@@ -39,7 +39,7 @@ const TradesSection: React.FC = () => {
             )
         }
         return (
-            <TradeTable trades={trades}/>
+            <TradeTable trades={trades} loading={isLoading} account={account}/>
         )
     }
 

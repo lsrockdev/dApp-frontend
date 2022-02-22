@@ -26,7 +26,7 @@ interface AuctionFields {
     auctionId: string
     creationTime: string
     endAt: string
-    staringPrice: string
+    startingPrice: string
     lastPrice: string
     status: number
     gego: GegoFields
@@ -63,13 +63,15 @@ function convertAuctionGegoResponse(gego: GegoFields) : DeserializedNFTGego{
 }
 
 function convertAuctionResponse(auction: AuctionFields) : NFTAuction {
-    const {id, auctionId, payToken, creationTime, endAt, staringPrice, lastPrice, status, gego} = auction
+    const {id, auctionId, payToken, creationTime, endAt, startingPrice: startingPrice_, lastPrice, status, gego, seller, lastBidder} = auction
     return {
         id,
         auctionId,
         creationTime: parseInt(creationTime),
         endAt: parseInt(endAt),
-        startingPrice: parseFloat(staringPrice),
+        seller,
+        lastBidder,
+        startingPrice: parseFloat(startingPrice_),
         lastPrice: lastPrice ? parseFloat(lastPrice) : undefined,
         payToken : payToken ? (payToken.id === tokens.spy.address ? tokens.spy : new Token(parseInt(process.env.REACT_APP_CHAIN_ID, 10), payToken.id, parseInt(payToken.decimals), payToken.symbol, payToken.decimals)) : null,
         status,
@@ -89,7 +91,7 @@ export const getAuctionById = async(id: string): Promise<NFTAuctionData> => {
                 auctionId
                 creationTime
                 endAt
-                staringPrice
+                startingPrice
                 lastPrice
                 status
                 payToken {
@@ -118,7 +120,7 @@ export const getAuctionById = async(id: string): Promise<NFTAuctionData> => {
             return undefined
         }
 
-        const {  seller, lastBidder: lastBidder_, tokenId, gego, staringPrice: startingPrice_, lastPrice: lastPrice_, endAt, creationTime, status, payToken} = data.auction
+        const {  seller, lastBidder: lastBidder_, tokenId, gego, startingPrice: startingPrice_, lastPrice: lastPrice_, endAt, creationTime, status, payToken} = data.auction
         const lastBidder = lastBidder_ === undefined || lastBidder_ === null ? AddressZero : lastBidder_
         const lastPrice = new BigNumber(lastPrice_ === undefined || lastPrice_ === null ? startingPrice_ : lastPrice_).multipliedBy(BIG_TEN.pow(payToken ? payToken.decimals : 18))
         return {
@@ -174,7 +176,9 @@ export const getAllAuctions = async(filter: NFTMarketPlaceSearchFilter) : Promis
                 auctionId
                 creationTime
                 endAt
-                staringPrice
+                startingPrice
+                seller
+                lastBidder
                 lastPrice
                 status
                 payToken {
@@ -216,7 +220,9 @@ export const getMyAuctions = async(address: string) : Promise<NFTAuction[]> => {
                 auctionId
                 creationTime
                 endAt
-                staringPrice
+                startingPrice
+                seller
+                lastBidder
                 lastPrice
                 status
                 payToken {
