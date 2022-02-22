@@ -42,7 +42,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SPY-USDC LP',
     lpAddresses: {
       97: '0x1aec329c825fA6dE8be4f0CB5410C0D4650dACE9',
-      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+      56: '0xc115f337130aaaE97F4Ab34751ee2854D2795958',
     },
     token: serializedTokens.spy,
     quoteToken: serializedTokens.usdc,
@@ -52,7 +52,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'USDC-BNB LP',
     lpAddresses: {
       97: '0x6255381c390d833114ba5121df4D8Ac1Ce8B868A',
-      56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+      56: '0xd99c7F6C65857AC913a8f880A4cb84032AB2FC5b',
     },
     token: serializedTokens.usdc,
     quoteToken: serializedTokens.wbnb,
