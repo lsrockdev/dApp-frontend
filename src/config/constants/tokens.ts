@@ -38,7 +38,7 @@ export const testnetTokens = {
   spy: new Token(TESTNET, '0x6F25144001Ce324E745c3FF25a646A292883feD5', 0, 'SPY', 'SmartyPay Token', 'http://test.smarty-pay.com'),
   busd: new Token(TESTNET, '0x2aFD1d7DADEfb7fE31364A4f57f704c1558C8Edc', 18, 'BUSD', 'Binance USD', 'https://www.paxos.com/busd/'),
   spynft: new Token(TESTNET, '0xa7aa050D7B6bc477e4a0128BA657380c944b9404', 0, 'SPY-NFT', 'SPY NFT', 'http://test.smarty-pay.com'),
-  usdt: new Token(MAINNET, '0x5eC8797235c38A854447c8f21D226c09dC812D70', 18, 'USDT', 'Tether USD', 'https://tether.to/'),
+  usdc: new Token(MAINNET, '0x5eC8797235c38A854447c8f21D226c09dC812D70', 18, 'USDC', 'Binance-Peg USD Coin', 'https://www.centre.io/usdc'),
 }
 
 const tokens = (): TokenList => {

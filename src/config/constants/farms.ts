@@ -39,22 +39,22 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 4,
-    lpSymbol: 'SPY-USDT LP',
+    lpSymbol: 'SPY-USDC LP',
     lpAddresses: {
       97: '0x1aec329c825fA6dE8be4f0CB5410C0D4650dACE9',
       56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     },
     token: serializedTokens.spy,
-    quoteToken: serializedTokens.usdt,
+    quoteToken: serializedTokens.usdc,
   },
   {
     pid: null,
-    lpSymbol: 'USDT-BNB LP',
+    lpSymbol: 'USDC-BNB LP',
     lpAddresses: {
       97: '0x6255381c390d833114ba5121df4D8Ac1Ce8B868A',
       56: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     },
-    token: serializedTokens.usdt,
+    token: serializedTokens.usdc,
     quoteToken: serializedTokens.wbnb,
   },
 

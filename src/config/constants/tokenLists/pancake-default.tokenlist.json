@@ -35,12 +35,12 @@
       "logoURI": "http://test.smarty-pay.com/images/tokens/0x2aFD1d7DADEfb7fE31364A4f57f704c1558C8Edc.png"
     },
     {
-      "name": "USDT Token",
-      "symbol": "USDT",
+      "name": "Binance-Peg USD Coin",
+      "symbol": "USDC",
       "address": "0x5eC8797235c38A854447c8f21D226c09dC812D70",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "http://optimistic-visvesvaraya-a36231.netlify.app/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
+      "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d/logo.png"
     },
     {
       "name": "WBNB Token",
