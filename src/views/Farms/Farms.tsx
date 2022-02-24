@@ -142,8 +142,8 @@ const Farms: React.FC = () => {
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 3 && (farm.pid || farm.pid === 0) && (farm.multiplier !== '0X' || farm.pid === 4) && !isArchivedPid(farm.pid))
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 3 && (farm.pid || farm.pid === 0) && (farm.multiplier !== '0X' || farm.pid === 4) && !isArchivedPid(farm.pid))
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 3 && (farm.pid || farm.pid === 0) && farm.multiplier !== '0X' && !isArchivedPid(farm.pid))
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 3 && (farm.pid || farm.pid === 0) && farm.multiplier === '0X' && !isArchivedPid(farm.pid))
   const archivedFarms = farmsLP.filter((farm) => farm.pid !== 3 && (farm.pid || farm.pid === 0) && isArchivedPid(farm.pid))
 
   const stakedOnlyFarms = activeFarms.filter(
