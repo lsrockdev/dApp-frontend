@@ -123,7 +123,7 @@ const Statistics: React.FC<StatisticsProps> = ({stats}) => {
                             </Flex>
                             <Flex flexDirection="column" width={["100%", null, null, "50%"]}>
                                 <Text fontSize="14px">
-                                    {t('Total Farm Friends')}
+                                    {t('Total Farm Earned')}
                                 </Text>
                                 <Text color="secondary" fontSize="18px" fontWeight="bold">
                                     {getFullDisplayBalance(stats.totalRewards, token.decimals)} {token.symbol}
