@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Flex, Heading } from '@pancakeswap/uikit'
+import { Flex, Heading, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import { useTranslation } from 'contexts/Localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
+import useRefresh from 'hooks/useRefresh'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 import { getSrcSet } from './CompositeImage'
 import ReferralLink from './ReferralLink'
+import { ReferralStatistics } from '../types'
+import { getReferralStatistics } from '../hooks/getStatistics'
+import Statistics from './Statistics'
+
+const ReferralSection = styled(Flex).attrs({flex: "1", flexDirection:"column"})`
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: ${({ theme }) => theme.radii.default};
+  padding: 24px 16px 16px 16px;
+`
 
 const flyingAnim = () => keyframes`
   from {
@@ -18,27 +28,12 @@ const flyingAnim = () => keyframes`
   }
   to {
     transform: translate(0, 0px);
-  }  df
-`
-
-const BgWrapper = styled.div`
-  z-index: -1;
-  overflow: hidden;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  bottom: 0px;
-  left: 0px;
-`
-
-const InnerWrapper = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: -3px;
+  }
 `
 
 const BunnyWrapper = styled.div`
   width: 100%;
+  max-width: 200px;
   animation: ${flyingAnim} 3.5s ease-in-out infinite;
 `
 
@@ -49,51 +44,62 @@ const Hero = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { theme } = useTheme()
+  const [stats, setStats] = useState<ReferralStatistics|undefined>(undefined)
+  const [loaded, setLoaded] = useState(false)
+
+  const { slowRefresh } = useRefresh()
+  useEffect(() => {
+    const loadStats = async() => {
+      try {
+        if (account) {
+          const stats_ = await getReferralStatistics(account)
+          setStats(stats_)
+        } else {
+          setStats(undefined)
+        }
+      } finally {
+        setLoaded(true)
+      }
+    }
+
+    loadStats()
+  }, [account, slowRefresh])
 
   return (
     <>
-      <BgWrapper>
-        <InnerWrapper>{theme.isDark ? <SlideSvgDark width="100%" /> : <SlideSvgLight width="100%" />}</InnerWrapper>
-      </BgWrapper>
-      <Flex
-        position="relative"
-        flexDirection={['column-reverse', null, null, 'row']}
-        alignItems={['flex-end', null, null, 'center']}
-        justifyContent="center"
-        mt={[account ? '280px' : '50px', null, 0]}
-        id="homepage-hero"
-      >
-        <Flex flex="1" flexDirection="column">
-          <Heading scale="xxl" color="secondary" mb="24px">
-            {t('Smarty Pay Referral Program')}
-          </Heading>
-          <Heading scale="md" mb="24px">
-            {t('Share the referral link below to invite your friends and earn 5% of your friends earnings FOREVER!')}
-          </Heading>
-          <Flex>
+      <Flex flexDirection="column">
+        <Flex flexWrap="wrap" flexDirection={["column", null, null, "row"]}>
+          <Flex flex="1" flexDirection="column" paddingBottom="24px">
+            <Heading scale="xl" color="secondary" mb="8px" padding="8px">
+              {t('Smarty Pay Referral Program')}
+            </Heading>
+            <Text padding="8px">
+              {t('Share the referral link below to invite your friends and earn 5% of your friends earnings FOREVER!')}
+            </Text>
+            { !account  && (
+              <ConnectWalletButton mr="8px" mt="24px"/>
+            )}
+          </Flex>
+          <Flex flex="1" flexDirection="column" padding="8px 8px 24px 8px">
             {account ? (
-                <div>
-                  <ReferralLink /> 
-                  {/* <TotalReferralCount /> */}
-                </div>
-              ) : (
-                <div>
-                  <ConnectWalletButton mr="8px" />
-                </div>
-              )}
+              <ReferralSection>
+                <ReferralLink /> 
+                {/* <TotalReferralCount /> */}
+              </ReferralSection>
+            ) : (
+              <Flex justifyContent="center" alignItems="center">
+                <BunnyWrapper>
+                  <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
+                </BunnyWrapper>
+              </Flex>
+            )}
           </Flex>
         </Flex>
-        <Flex
-          height={['192px', null, null, '100%']}
-          width={['192px', null, null, '100%']}
-          flex={[null, null, null, '1']}
-          mb={['24px', null, null, '0']}
-          position="relative"
-        >
-          <BunnyWrapper>
-            <img src={`${imagePath}${imageSrc}.png`} srcSet={getSrcSet(imagePath, imageSrc)} alt={t('Lunar bunny')} />
-          </BunnyWrapper>
-        </Flex>
+        { account && stats && (
+          <Flex flexDirection="column">
+            <Statistics stats={stats}/>
+          </Flex>
+        )}
       </Flex>
     </>
   )

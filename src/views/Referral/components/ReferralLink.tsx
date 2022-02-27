@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Input, Heading, Button } from '@pancakeswap/uikit'
+import { Input, Heading, Button, Flex } from '@pancakeswap/uikit'
 import { ToastContainer } from 'components/Toast'
 import { useWeb3React } from '@web3-react/core'
 import styled from 'styled-components'
@@ -32,14 +32,14 @@ const ReferralLink = () => {
     };
 
     return (
-        <div>
-            <Heading size="md">Your Referral Link</Heading>
-            <StyleInput type="text" scale="md" value={`${BASE_URL}/?ref=${rot13(account)}`} readOnly />
+        <Flex justifyContent="center" alignItems="center" flexDirection="column">
+            <Heading size="md" mb="8px">Your Referral Link</Heading>
+            <StyleInput type="text" scale="md" value={`${BASE_URL}/?ref=${rot13(account)}`} readOnly/>
             <CopyToClipboard text={`${BASE_URL}/?ref=${rot13(account)}`} onCopy={()=> {handleClick()}}>
-                <Button variant="primary" mt="8px">Copy</Button>
+                <Button variant="primary" mt="16px">Copy</Button>
             </CopyToClipboard>
             <ToastContainer toasts={toasts} onRemove={handleRemove} />
-        </div>
+        </Flex>
     )
 
 }

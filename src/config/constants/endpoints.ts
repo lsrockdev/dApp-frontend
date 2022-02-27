@@ -18,3 +18,4 @@ export const INFO_CLIENT = 'https://bsc.streamingfast.io/subgraphs/name/pancakes
 export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
 export const GRAPH_API_NFTMARKET = process.env.REACT_APP_GRAPH_API_NFT_MARKET
 export const GRAPH_API_NFTMARKET_MARKETPLACE = process.env.REACT_APP_GRAPH_API_NFT_MARKETPLACE
+export const GRAPH_API_REFERRAL = process.env.REACT_APP_GRAPH_API_REFERRAL
