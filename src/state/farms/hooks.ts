@@ -130,6 +130,23 @@ export const useBusdPriceFromPid = (pid: number): BigNumber => {
   return farm && new BigNumber(farm.tokenPriceBusd)
 }
 
+export const getLpTokenPrice = (farm: DeserializedFarm) => {
+  const farmTokenPriceInUsd = new BigNumber(farm.tokenPriceBusd)
+  let lpTokenPrice = BIG_ZERO
+
+  if (farm.lpTotalSupply.gt(0) && farm.lpTotalInQuoteToken.gt(0)) {
+    // Total value of base token in LP
+    const valueOfBaseTokenInFarm = farmTokenPriceInUsd.times(farm.tokenAmountTotal)
+    // Double it to get overall value in LP
+    const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.times(2)
+    // Divide total value of all tokens, by the number of LP tokens
+    const totalLpTokens = getBalanceAmount(farm.lpTotalSupply)
+    lpTokenPrice = overallValueOfAllTokensInFarm.div(totalLpTokens)
+  }
+
+  return lpTokenPrice
+}
+
 export const useLpTokenPrice = (symbol: string) => {
   const farm = useFarmFromLpSymbol(symbol)
   const farmTokenPriceInUsd = useBusdPriceFromPid(farm.pid)
