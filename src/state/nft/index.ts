@@ -118,11 +118,13 @@ export const nftSlice = createSlice({
         builder.addCase(fetchNFTPoolUserDataAsync.fulfilled, (state,action) => {
             state.poolUserData = {
                 ...state.poolUserData,
-                ...action.payload.new
+                ...action.payload.new,
+                userDataLoaded: true
             }
             state.oldPoolUserData = {
                 ...state.oldPoolUserData,
-                ...action.payload.old
+                ...action.payload.old,
+                userDataLoaded: true
             }
         })
         builder.addCase(fetchNFTUserBalanceDataAsync.fulfilled, (state,action) => {

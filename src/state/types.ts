@@ -129,6 +129,7 @@ export interface SerialzedNFTPoolUserData {
   balance: SerializedBigNumber
   earning: SerializedBigNumber
   nextHarvestUntil: number
+  userDataLoaded: boolean
 }
 
 export interface DeserialzedNFTPoolPublicData {
@@ -146,6 +147,7 @@ export interface DeserialzedNFTPoolUserData {
   balance: BigNumber
   earning: BigNumber
   nextHarvestUntil: number
+  userDataLoaded: boolean
 }
 
 

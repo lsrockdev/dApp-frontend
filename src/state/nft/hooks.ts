@@ -101,7 +101,8 @@ export const useNFTPoolUserData = () : DeserialzedNFTPoolUserData => {
   return {
     balance: userData ? new BigNumber(userData.balance) : BIG_ZERO,
     earning: userData ? new BigNumber(userData.earning) : BIG_ZERO,
-    nextHarvestUntil: userData ? userData.nextHarvestUntil : 0
+    nextHarvestUntil: userData ? userData.nextHarvestUntil : 0,
+    userDataLoaded: userData ? userData.userDataLoaded : false
   }
 }
 export const useOldNFTPoolUserData = () : DeserialzedNFTPoolUserData => {
@@ -109,7 +110,8 @@ export const useOldNFTPoolUserData = () : DeserialzedNFTPoolUserData => {
   return {
     balance: userData ? new BigNumber(userData.balance) : BIG_ZERO,
     earning: userData ? new BigNumber(userData.earning) : BIG_ZERO,
-    nextHarvestUntil: userData ? userData.nextHarvestUntil : 0
+    nextHarvestUntil: userData ? userData.nextHarvestUntil : 0,
+    userDataLoaded: userData ? userData.userDataLoaded : false
   }
 }
 

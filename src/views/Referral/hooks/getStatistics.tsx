@@ -68,8 +68,6 @@ export const getReferralStatistics = async(address: string) : Promise<ReferralSt
         }
     `
 
-    console.log(query)
-
     try {
         const data = await request<StatisticResponse>(GRAPH_API_REFERRAL, query)
         // let [today, yesterday, thisweek, lastweek, thismonth, lastmonth, totalRewards] 
