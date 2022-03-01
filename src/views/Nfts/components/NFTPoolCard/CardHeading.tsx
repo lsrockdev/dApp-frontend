@@ -26,7 +26,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ lpLabel }) => {
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       <TokenPairImage variant="inverted" primaryToken={spyToken} secondaryToken={spyToken} width={64} height={64} />
       <Flex flexDirection="column" alignItems="flex-end">
-        <Heading mb="4px">SPY NFT Pool (V2)</Heading>
+        <Heading mb="4px">SPY NFT Pool (V3)</Heading>
         <Flex justifyContent="center">
         <CoreTag />
           {/* {multiplier ? (

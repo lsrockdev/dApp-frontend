@@ -69,7 +69,6 @@ import nftMarketAbi from 'config/abi/nftMarket.json'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import pancakeSquadAbi from 'config/abi/pancakeSquad.json'
 import erc721CollctionAbi from 'config/abi/erc721collection.json'
-import generalNFTReward from 'config/abi/generalNFTReward.json'
 import generalNFTRewardV2Abi from 'config/abi/generalNFTRewardV2.json'
 import spyNFT from 'config/abi/spyNFT.json'
 import spyNFTFactory from 'config/abi/spyNFTFactory.json'
@@ -136,7 +135,7 @@ export const getNFTMarketplaceContract = (signer?: ethers.Signer | ethers.provid
   return getContract(spyNFTMarketplace, getNFTMarketplaceAddress(), signer)
 }
 export const getOldSpyNFTRewardContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
-  return getContract(generalNFTReward, getOldGeneralNFTRewardAddress(), signer)
+  return getContract(generalNFTRewardV2Abi, getOldGeneralNFTRewardAddress(), signer)
 }
 export const getSpyNFTRewardContract = (signer?: ethers.Signer | ethers.providers.Provider) => {
   return getContract(generalNFTRewardV2Abi, getGeneralNFTRewardAddress(), signer)

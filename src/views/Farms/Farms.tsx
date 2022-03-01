@@ -339,7 +339,7 @@ const Farms: React.FC = () => {
             />
           ))}
           <NFTPoolCard account={account} />
-          {/* <NFTPoolCardOld account={account} /> */}
+          <NFTPoolCardOld account={account} />
         </Route>
         <Route exact path={`${path}/history`}>
           {chosenFarmsMemoized.map((farm) => (
